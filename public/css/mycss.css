@@ -1,0 +1,9 @@
+ .bg-estado-retirado{
+     background-color: rgb(255, 171, 171);
+ }
+ .bg-estado-sin-gestion{
+     background-color: rgb(171, 205, 255);
+ }
+ .bg-estado-warnig{
+     background-color: rgb(255, 250, 116);
+ }
