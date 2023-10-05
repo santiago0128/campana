@@ -6,6 +6,7 @@ use App\Models\ModelGestion;
 use App\Models\ModelProceso;
 use App\Models\ModelClientes;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Artisan;
 
@@ -94,12 +95,13 @@ class Controllerprocesos extends Controller
     }
     public function buscarReporteProcesosfiltro()
     {
-        $nombre = $_POST['nombre'];
-        $identificacion = $_POST['identificacion'];
-        $fecha_desde = $_POST['fecha_limite_desde'];
-        $fecha_hasta = $_POST['fecha_limite_hasta'];
-        $estado = $_POST['estado'];
-        $procesos = ModelProceso::getProcesosfiltro($nombre, $identificacion, $fecha_desde, $fecha_hasta, $estado);
+        
+        $obligacion = request()['obligacion'];
+        $identificacion = request()['identificacion'];
+        $fecha_desde = request()['fecha_limite_desde'];
+        $fecha_hasta = request()['fecha_limite_hasta'];
+        $estado = request()['estado'];
+        $procesos = ModelProceso::getProcesosfiltro($obligacion, $identificacion, $fecha_desde, $fecha_hasta, $estado);
 
         foreach ($procesos as $key) {
             $report = json_encode($key);
@@ -115,27 +117,51 @@ class Controllerprocesos extends Controller
 
     public function buscarProcesoId()
     {
+        return view('gestion.gestion_procesos');
+    }
 
-        $identificacion = $_POST['value'];
+    public function getdataproceso(){
+
+        $identificacion = request()[0];
         $procesos = ModelProceso::getProcesosIdentificacion($identificacion);
-        $clientes = ModelClientes::getClientesIdentificacion($identificacion);
+        $historico = ModelGestion::getHistorico($identificacion);
         $accion = ModelGestion::getAccion();
         $mtvonopago = ModelGestion::getMtvonoPago();
         $actividad = ModelGestion::getActividadEconomica();
         $tipocontacto = ModelGestion::getTipoContacto();
-        $historico = ModelGestion::getHistorico($identificacion);
         $etapa = ModelGestion::getEtapa();
-        // $ultimaetapa = ModelGestion::getUltimaEtapa($identificacion);
+        $modulo_gestion = ModelGestion::modulos_gestion();
+        $perfil = ModelGestion::perfil_gestion();
 
-        return view('gestion.gestion_procesos')->with(['procesos' => $procesos])
-            ->with(['clientes' => $clientes])
-            ->with(['mtvonopago' => $mtvonopago])
-            ->with(['actividad' => $actividad])
-            ->with(['tipocontacto' => $tipocontacto])
-            ->with(['historico' => $historico])
-            ->with(['etapa' => $etapa])
-            // ->with(['ultimaetapa' => $ultimaetapa])
-            ->with(['accion' => $accion]);
+        return response()->json([
+            'procesos' => $procesos,
+            'historico' => $historico,
+            'accion' => $accion,
+            'actividad' => $actividad,
+            'tipocontacto' => $tipocontacto,
+            'etapa' => $etapa,
+            'modulo_gestion' => $modulo_gestion,
+            'mtvonopago' => $mtvonopago,
+            'perfil' => $perfil,
+        ]);
+
+    }
+
+    public function activarcontacto(){
+
+        $id = request()[0];
+        $contacto = ModelGestion::getContactogestion($id);
+        return response()->json([
+            'contacto' => $contacto,
+        ]);
+    }
+    public function activarperfil(){
+
+        $id = request()[0];
+        $perfil = ModelGestion::getPerfilgestion($id);
+        return response()->json([
+            'perfil' => $perfil,
+        ]);
     }
 
     // public function descargarProceso()

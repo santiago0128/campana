@@ -33,10 +33,20 @@ Route::post('/upload', [Controllerprocesos::class, 'proceso_table_schema']);
 Route::post('/uploadfile', [Controllerprocesos::class, 'uploadfile']);
 
 Route::post('/reporteProceso', [Controllerprocesos::class, 'buscarReporteProcesos']);
-Route::post('/filtroProceso', [Controllerprocesos::class, 'buscarProcesoFiltro']);
+Route::post('/filtroProceso', [Controllerprocesos::class, 'buscarReporteProcesosfiltro']);
 Route::post('/descargarProceso', [Controllerprocesos::class, 'descargarProceso']);
 Route::post('/buscarfiltroProceso', [Controllerprocesos::class, 'buscarReporteProcesosfiltro']);
-Route::post('/verProceso', [Controllerprocesos::class, 'buscarProcesoId']);
+Route::get('/verProceso', [Controllerprocesos::class, 'buscarProcesoId']);
+Route::POST('/getdataproceso', [Controllerprocesos::class, 'getdataproceso']);
+
+
+
+Route::POST('/activarcontacto', [Controllerprocesos::class, 'activarcontacto']);
+Route::POST('/activarperfil', [Controllerprocesos::class, 'activarperfil']);
+
+
+
+
 
 Route::post('/saveGestion', [Controllergestion::class, 'saveGestion']);
 Route::post('/savefechas_proceso', [Controllergestion::class, 'savefechas_proceso']);

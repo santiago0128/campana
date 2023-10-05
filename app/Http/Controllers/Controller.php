@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Routing\Controller as BaseController;
-use App\Models\ModelUsuario;
-use App\Models\ModelProceso;
-use App\Models\ModelClientes;
 use App\Models\ModelGestion;
+use App\Models\ModelProceso;
+use App\Models\ModelUsuario;
+use App\Models\ModelClientes;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\VarDumper\VarDumper;
+use Illuminate\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
@@ -27,7 +28,8 @@ class Controller extends BaseController
     public function gestion()
     {
         if(isset($_GET['tareas'])){
-            return view('gestion.procesos');
+            $shema_procesos = DB::table('sys.schema_procesos')->get();
+            return view('gestion.procesos')->with('schema', $shema_procesos);
         }elseif(isset($_GET['calendario'])){
             return view('gestion.calendario');
         }

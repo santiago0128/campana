@@ -45,13 +45,13 @@ class ModelGestion extends Model
         return $data;
         
     }
-    public static function getPerfilGestion()
-    {
-        $sql = "SELECT * FROM sys.perfilgestion";
-        $data = DB::connection('pgsql')->select($sql);
-        return $data;
+    // public static function getPerfilGestion()
+    // {
+    //     $sql = "SELECT * FROM sys.perfilgestion";
+    //     $data = DB::connection('pgsql')->select($sql);
+    //     return $data;
         
-    }
+    // }
     public static function getMtvonoPago()
     {
         $sql = "SELECT * FROM sys.motivonopago";
@@ -168,11 +168,11 @@ class ModelGestion extends Model
     }
 
 
-    public static function InsertarGestion( $gestion, $segundos_totales, $etapa, $accion, $id, $ip, $identificacion,  $fecha_agendado, $codllamada, $login, $obligacion)
+    public static function InsertarGestion( $gestion, $segundos_totales, $perfil, $contacto, $accion, $id, $ip, $identificacion,  $fecha_agendado, $login, $obligacion)
     {
                                
-        $sql = "INSERT INTO sys.historicogestion ( fechagestion,gestion, ipequipo, tiempogestion, etapa, idaccion, idusuario,  codllamada,  fechaagendado, obligacion,  identificacion, login)
-         VALUES( current_timestamp,  '$gestion', '$ip',  $segundos_totales, $etapa, $accion, $id,  '$codllamada', '$fecha_agendado', '$obligacion', '$identificacion', '$login') RETURNING id";
+        $sql = "INSERT INTO sys.historicogestion ( fechagestion,gestion, ipequipo, tiempogestion,  idaccion, idusuario, fechaagendado, obligacion,  identificacion, login, idperfil, idcontacto)
+        VALUES( now(),  '$gestion', '$ip',  '$segundos_totales', $accion, $id, $fecha_agendado, '$obligacion', '$identificacion', '$login', '$perfil', '$contacto') RETURNING id";
         $data = DB::connection('pgsql')->select($sql);
         return $data;
         
@@ -185,15 +185,28 @@ class ModelGestion extends Model
         return $data;
         
     }
+
+    public static function getContactogestion($id){
+
+        $sql = "SELECT * from sys.contacto where accion_asignada = $id";
+        $data = DB::connection('pgsql')->select($sql);
+        return $data;
+    }
+    public static function getPerfilgestion($id){
+
+        $sql = "SELECT * from sys.perfil_gestion where contacto_asignado = $id";
+        $data = DB::connection('pgsql')->select($sql);
+        return $data;
+    }
+
   
     public static function getHistorico($identificacion){
 
-        $sql = "SELECT h.idprocesos,h.fechagestion,h.gestion,
+        $sql = "SELECT h.fechagestion,h.gestion,h.login,h.tiempogestion,
         (select pg.nombre from sys.perfilgestion pg where h.idperfil = pg.id) as perfil,
+        (select c.nombre from sys.contacto c where h.idcontacto = c.id) as contacto,
         (select e.nombre from sys.etapa e where h.etapa = e.id) as etapa,
         (select a.nombre from sys.acciongestion a  where h.idaccion = a.id) as accion
-        --(select c.nombre from sys.contacto c  where h.contacto = c.id) as contacto,
-       -- (select m.nombre from sys.motivonopago m   where h.motnopago = m.id) as mtvonopago
         from sys.historicogestion h where h.identificacion = $identificacion order by h.fechagestion desc";
 
 

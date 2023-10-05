@@ -12,36 +12,30 @@ class Controllergestion extends Controller
     public function saveGestion()
     {
 
-        $segundos_totales = $_POST['segundostotales'];
-        $codllamada = $_POST['codllamada'];
-        $gestion = $_POST['gestion'];
-        $accion = $_POST['accion'];
-        $etapa = $_POST['etapa'];
-        // $telefono = $_POST['telefono'];
-
-
-        $identificacion = $_POST['identificacion'];
+        $hora = request()['hora'];
+        $minuto = request()['minuto'];
+        $segundos = request()['segundos'];
+        $gestion = request()['texto'];
+        $accion = request()['accion'];
+        $contacto = request()['contacto'];
+        $perfil = request()['perfil'];
+        $fecha_agendado = request()['fecha_agendado'];
+        $identificacion = request()['identificacion'];
+        $obligacion = request()['obligacion'];
         $id = 1;
         $ip = $_SERVER['REMOTE_ADDR'];
         $login = "prueba";
-        $obligacion = $_POST['obligacion'];
 
+        $fecha_agendado = !empty($fecha_agendado) ? $fecha_agendado : "NULL";
 
+        $hora = $hora < 10 ? '0' . $hora : $hora;
+        $minuto = $minuto < 10 ? '0' . $minuto : $minuto;
+        $segundos = $segundos < 10 ? '0' . $segundos : $segundos;
 
-        if (!empty($fecha_agendado)) {
-            $fecha_agendado = $fecha_agendado;
-        } else {
-            $fecha_agendado = "NULL";
-        }
-
-        // if (!empty($telefono)) {
-        //     $telefono = $telefono;
-        // } else {
-        //     $telefono = "NULL";
-        // }
+        $tiempo_gestion = "$hora : $minuto : $segundos";
 
         try {
-            $gestion2 = ModelGestion::InsertarGestion( $gestion, $segundos_totales, $etapa, $accion, $id, $ip, $identificacion, $fecha_agendado, $codllamada, $login, $obligacion);
+            $gestion2 = ModelGestion::InsertarGestion( $gestion, $tiempo_gestion, $perfil, $contacto ,$accion, $id, $ip, $identificacion, $fecha_agendado, $login, $obligacion);
             return $gestion2;
         } catch (\Throwable $th) {
             echo "Error Insertar Gestion" . $th;

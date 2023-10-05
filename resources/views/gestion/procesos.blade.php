@@ -1,5 +1,6 @@
 @extends('inicio.index')
 @section('contenido')
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 <div id="app">
     <div id="main-content">
         <div class="block-header">
@@ -28,12 +29,13 @@
                     </div>
                 </div>
                 <div class="body">
-                    <form method="POST" id="form_buscar_procesos">
+                    <form id="form_buscar_procesos">
+                        @csrf
                         <div class="row">
                             <div class="col">
                                 <div class="col-3 col-sm-3 col-md-12 col-lg-12">
-                                    <label for="">Nombre</label>
-                                    <input type="text" class="form-control" name="nombre" id="nombre">
+                                    <label for="">Obligacion</label>
+                                    <input type="text" class="form-control" name="obligacion" id="obligacion">
                                 </div>
                                 &nbsp;
                                 <div class="col-3 col-sm-3 col-md-12 col-lg-12">
@@ -80,23 +82,25 @@
             <div class="card">
                 <div class="body">
                     <div class="table-responsive">
-                        <table id="table_procesos" class="table">
+                        <table id="miTabla" class="table">
                             <thead>
                                 <tr>
-                                    <th style="text-align: center;">Id Proceso</th>
-                                    <th style="text-align: center;">Identificacion Demandado</th>
-                                    <th style="text-align: center;">Nombre Demandado</th>
-                                    <th style="text-align: center;">Nombre Demandante</th>
-                                    <th style="text-align: center;">Ciudad</th>
-                                    <th style="text-align: center;">Estado Cartera</th>
-                                    <th style="text-align: center;">Abogado Externo</th>
-                                    <th style="text-align: center;">Casa Cobranza</th>
-                                    <th style="text-align: center;">Estado</th>
-                                    <th style="text-align: center;">Acciones</th>
+                                    <th style="text-align: center;">id</th>
+                                    @foreach ($schema as $schema)
+                                    <th style="text-align: center;">{{$schema->nombre}}</th>
+                                    @endforeach
+                                    <th style="text-align: center;">Accion</th>
                                 </tr>
                             </thead>
                             <tbody class="text-center">
-
+                                <template v-for="item in procesos">
+                                    <tr>
+                                        <template v-for="item2 in keys">
+                                            <td>@{{item[item2]}}</td>
+                                        </template>
+                                        <td><a :href="'/verProceso?id=' + item.id"  class="btn btn-primary">Ver</a></td>
+                                    </tr>
+                                </template>
                             </tbody>
                         </table>
                     </div>
@@ -106,34 +110,69 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <!-- Tu código de Vue.js -->
 <script>
+    $(document).ready(function() {
+        $('#miTabla').DataTable({
+            "info": false,
+            "lengthChange": false,
+        });
+    });
     var app = new Vue({
         el: '#app',
         data: {
-            accion: {},
-            accion_admin: {},
-            actividad: {},
-            etapa: {},
+            procesos: {},
+            keys: {},
         },
         mounted() {
             this.getData()
+        
         },
         methods: {
             binding(data) {
-                this.accion = data.accion
-                this.accion_admin = data.accion_admin
-                this.actividad = data.actividad
-
+                this.procesos = data
             },
             async getData() {
-                const response = await fetch("/getAdminGestion");
+
+                let obligacion = document.getElementById('obligacion').value
+                let estado = document.getElementById('estado').value
+                let identificacion = document.getElementById('identificacion').value
+                let fecha_limite_desde = document.getElementById('fecha_limite_desde').value
+                let fecha_limite_hasta = document.getElementById('fecha_limite_hasta').value
+
+                let json = {
+                    'obligacion': obligacion,
+                    'estado': estado,
+                    'identificacion': identificacion,
+                    'fecha_limite_desde': fecha_limite_desde,
+                    'fecha_limite_hasta': fecha_limite_hasta,
+                }
+
+                const response = await fetch("/filtroProceso", {
+                    method: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(json),
+                });
                 const data = await response.json();
+                this.getKey(data);
                 this.binding(data);
             },
-            async deshabilitaretapa(id) {
-                const response = await fetch("/deshabilitar", {
+            getKey(data) {
+
+                let llaves = [];
+                for (let index = 0; index < data.length; index++) {
+                    llaves = Object.keys(data[0]);
+                }
+                this.keys = llaves;
+
+            },
+            async verproceso(id){
+                await fetch("/verProceso", {
                     method: "POST",
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
@@ -141,10 +180,9 @@
                     },
                     body: JSON.stringify(id),
                 });
-                console.log(response);
                 const data = await response.json();
-                this.binding(data);
-            },
+              
+            },              
 
         }
     });

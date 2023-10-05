@@ -35,25 +35,25 @@ class ModelProceso extends Model
 
     }
 
-    public static function getProcesosIdentificacion($identificacion){
+    public static function getProcesosIdentificacion($id){
 
-        $sql = ("SELECT * from sys.procesos where identificacion_demandado = '$identificacion'");
+        $sql = ("SELECT * from sys.procesos where id = '$id'");
         $report = DB::connection('pgsql')->select($sql);
         return $report;
 
     }
 
 
-    public static function getProcesosfiltro($nombre,$identificacion,$fecha_desde,$fecha_hasta,$estado)
+    public static function getProcesosfiltro($obligacion,$identificacion,$fecha_desde,$fecha_hasta,$estado)
     {
         $fecha_hoy = date('Y-m-d');
         $sql = "SELECT * from sys.procesos where true";
        
-        if (!empty($nombre)) {
-        $sql .= " AND nombre_demandado = '$nombre' ";
+        if (!empty($obligacion)) {
+        $sql .= " AND obligacion = '$obligacion' ";
         }
         if (!empty($identificacion)) {
-        $sql .= " AND identificacion_demandado = '$identificacion' ";
+        $sql .= " AND identificacion = '$identificacion' ";
         }
         if (!empty($estado)) {
         $sql .= " AND idestatus = '$estado' ";
@@ -65,7 +65,6 @@ class ModelProceso extends Model
                 $sql .= " AND fecha_ingreso = '$fecha_desde' between '$fecha_hoy'";
             }
         }
-
         $report = DB::connection('pgsql')->select($sql);
         return $report;
 
