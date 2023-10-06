@@ -122,8 +122,10 @@ class Controllerprocesos extends Controller
 
     public function getdataproceso(){
 
-        $identificacion = request()[0];
-        $procesos = ModelProceso::getProcesosIdentificacion($identificacion);
+
+        $id = request()['id'];
+        $identificacion = request()['identificacion'];
+        $procesos = ModelProceso::getProcesosIdentificacion($id);
         $historico = ModelGestion::getHistorico($identificacion);
         $accion = ModelGestion::getAccion();
         $mtvonopago = ModelGestion::getMtvonoPago();

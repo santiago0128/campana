@@ -26,7 +26,7 @@ class Controllergestion extends Controller
         $ip = $_SERVER['REMOTE_ADDR'];
         $login = "prueba";
 
-        $fecha_agendado = !empty($fecha_agendado) ? $fecha_agendado : "NULL";
+        $fecha_agendado = !empty($fecha_agendado) ? $fecha_agendado : NULL;
 
         $hora = $hora < 10 ? '0' . $hora : $hora;
         $minuto = $minuto < 10 ? '0' . $minuto : $minuto;

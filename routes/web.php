@@ -76,13 +76,20 @@ Route::post('/consultarmodulosactivos', [Controlleradministraciongestion::class,
 
 
 
+Route::post('/deshabilitarcontacto', [Controlleradministraciongestion::class, 'deshabilitarcontacto']);
+Route::post('/habilitarcontacto', [Controlleradministraciongestion::class, 'habilitarcontacto']);
+Route::post('/consultarcontacto', [Controlleradministraciongestion::class, 'consultarcontacto']);
+Route::post('/insertarcontacto', [Controlleradministraciongestion::class, 'insertarcontacto']);
+Route::post('/eliminarcontacto', [Controlleradministraciongestion::class, 'eliminarcontacto']);
+Route::post('/editarcontacto', [Controlleradministraciongestion::class, 'editarcontacto']);
+
+
 Route::post('/deshabilitaraccion', [Controlleradministraciongestion::class, 'deshabilitaraccion']);
 Route::post('/habilitaraccion', [Controlleradministraciongestion::class, 'habilitaraccion']);
 Route::post('/consultaraccion', [Controlleradministraciongestion::class, 'consultaraccion']);
 Route::post('/insertaraccion', [Controlleradministraciongestion::class, 'insertaraccion']);
 Route::post('/eliminaraccion', [Controlleradministraciongestion::class, 'eliminaraccion']);
 Route::post('/editaraccion', [Controlleradministraciongestion::class, 'editaraccion']);
-
 
 
 Route::post('/deshabilitarperfil', [Controlleradministraciongestion::class, 'deshabilitarperfil']);

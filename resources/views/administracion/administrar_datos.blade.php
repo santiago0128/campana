@@ -106,6 +106,41 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <div class="tab-pane" id="contacto">
+                                <div class="">
+                                    <div class="card ">
+                                        <button type="button" data-toggle="modal" data-target="#addContacto" id="addusuarios" class="btn btn-success">
+                                            <li class="fa fa-plus"></li> &nbsp; Agregar Contacto
+                                        </button>
+                                        <button type="button" data-toggle="modal" data-target="#editContacto" id="addusuarios" class="btn btn-primary">
+                                            <li class="fa fa-pencil-square-o"></li> &nbsp; Editar Contacto
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <table class="table" id="table_admin_accion">
+                                    <thead>
+                                        <th class="">Nombre</th>
+                                        <th class="">Estado</th>
+                                        <th class="">Accion</th>
+                                    </thead>
+                                    <tbody>
+                                        <template v-for="item in contacto">
+                                            <tr>
+                                                <td class="">@{{item.nombre}}</td>
+                                                <td class="" id="color_estado">
+                                                    <div class="circle" v-if="item.idestatus == 1 " style="background-color: #28a745;"></div>
+                                                    <div class="circle" v-else style="background-color: #dc3545;"></div>
+                                                </td>
+                                                <td class="" id="boton_estado">
+                                                    <button v-if="item.idestatus == 1 " type='button' class='btn btn-danger' v-on:click='deshabilitarcontacto(item.id)'>Deshabilitar</button>
+                                                    <button v-else type='button' class='btn btn-success' v-on:click='habilitarcontacto(item.id)'>Habilitar</button>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
                             <div class="tab-pane" id="perfil">
                                 <div class="">
                                     <div class="card ">
@@ -140,6 +175,85 @@
                                     </tbody>
                                 </table>
 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="addContacto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row clearfix">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="card">
+                                    <div class="modal-header">
+                                        <h2>Agregar Contacto</h2>
+                                    </div>
+                                    <div class="body" style="width: 100%;">
+                                        <form id="form_etapas" enctype="multipart/form-data" method="post">
+                                            @csrf
+                                            <div class="col-4 col-sm-4 col-md-4 col-md-12 col-lg-12" style="padding-top: 5px;">
+                                                <label for="">Nombre </label>
+                                                <input type="text" class="form-control" name="nombre_contacto" id="nombre_contacto">
+                                            </div>
+                                           
+                                            &nbsp;
+                                            <div class="col-4 col-sm-4 col-md-4 col-md-12 col-lg-12" style="padding-top: 5px;">
+                                                <button type="button" id="btnGuardarUsuario" v-on:click="guardarEtapa()" class="btn btn-success">Guardar</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="editContacto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row clearfix">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="card">
+                                    <div class="modal-header">
+                                        <h2>Editar Contacto</h2>
+                                    </div>
+                                    <div class="body" style="width: 100%;">
+                                        <form method="POST" id="form_edit_etapas">
+                                            <table class="table" id="table_edit_etapas">
+                                                <thead>
+                                                    <th class="text-center">Nombre</th>
+                                                    <th class="text-center">Accion</th>
+                                                    <th class="text-center">Accion</th>
+                                                </thead>
+                                                <tbody>
+                                                    <template v-for="item in contacto">
+                                                        <tr>
+                                                            <td class="text-center">@{{item.nombre}}</td>
+                                                            <td class="text-center">
+                                                                <select name="accion_select_edit" id="accion_select_edit" class="form-control">
+                                                                    <option value="" selected>@{{item.accion_asignada}}</option>
+                                                                    <template v-for="accion in accion">
+                                                                        <option :value="accion.id">@{{accion.nombre}}</option>
+                                                                    </template>
+                                                                </select>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <button type='button' v-on:click='eliminar_etapa(item.id)' class='btn btn-danger'>Eliminar</button>
+                                                            </td>
+                                                            <input type="hidden" v-model="item.id" name="id[]" id="id[]">
+                                                        </tr>
+                                                    </template>
+                                                </tbody>
+                                            </table>
+                                            <button type="button" v-on:click="actualizar_etapas()" class="btn btn-success">Guardar</button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -416,7 +530,8 @@
             perfil: {},
             perfil_admin: {},
             perfil_admin_edit: {},
-            tipocontacto: {},
+            contacto: {},
+            accion_select_edit: '',
             
         },
         mounted() {
@@ -434,10 +549,34 @@
                 this.perfil = data.perfil
                 this.perfil_admin = data.perfil_admin
                 this.perfil_admin_edit = data.perfil_admin_edit
-                this.tipocontacto = data.tipocontacto
+                this.contacto = data.contacto
             },
             async getData() {
                 const response = await fetch("/getAdminGestion");
+                const data = await response.json();
+                this.binding(data);
+            },
+            async deshabilitarcontacto(id){
+                const response = await fetch("/deshabilitarcontacto",{
+                    method: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(id),
+                });
+                const data = await response.json();
+                this.binding(data);
+            },
+            async habilitarcontacto(id){
+                const response = await fetch("/habilitarcontacto",{
+                    method: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(id),
+                });
                 const data = await response.json();
                 this.binding(data);
             },

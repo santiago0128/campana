@@ -278,32 +278,33 @@ function sendData() {
 
 }
 
-var tiempo = {
-  hora: 00,
-  minuto: 00,
-  segundo: 00,
-  segundos: 00
-};
-tiempo_corriendo = setInterval(function () {
-  // Segundos
-  tiempo.segundos++;
-  tiempo.segundo++;
-  if (tiempo.segundo >= 60) {
-    tiempo.segundo = 00;
-    tiempo.minuto++;
-  }
+// var tiempo = {
+//   hora: 00,
+//   minuto: 00,
+//   segundo: 00,
+//   segundos: 00
+// };
 
-  // Minutos
-  if (tiempo.minuto >= 60) {
-    tiempo.minuto = 00;
-    tiempo.hora++;
-  }
+// tiempo_corriendo = setInterval(function () {
+//   // Segundos
+//   tiempo.segundos++;
+//   tiempo.segundo++;
+//   if (tiempo.segundo >= 60) {
+//     tiempo.segundo = 00;
+//     tiempo.minuto++;
+//   }
 
-  $("#horas").val(tiempo.hora);
-  $("#minutos").val(tiempo.minuto);
-  $("#segundos").val(tiempo.segundo);
-  $("#segundostotales").val(tiempo.segundos);
-}, 1000);
+//   // Minutos
+//   if (tiempo.minuto >= 60) {
+//     tiempo.minuto = 00;
+//     tiempo.hora++;
+//   }
+
+//   $("#horas").val(tiempo.hora);
+//   $("#minutos").val(tiempo.minuto);
+//   $("#segundos").val(tiempo.segundo);
+//   $("#segundostotales").val(tiempo.segundos);
+// }, 1000);
 
 
 

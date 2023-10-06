@@ -126,7 +126,7 @@
                                 <template v-if="modulos_activos.includes('Perfiles')">
                                     <div class="form-group col-3 col-sm-3 col-md-3 col-lg-3" style="display: none;" id="perfil">
                                         <label for="tipocontacto">Perfil:</label>
-                                        <select v-model="perfil_selected" @change="activarSubPerfil()" class="form-control" require>
+                                        <select v-model="perfil_selected" class="form-control" require>
                                             <option value="" selected>Seleccione</option>
                                             <template v-for="perfil_seleccionado in perfil_seleccionado">
                                                 <option :value="perfil_seleccionado.id">@{{perfil_seleccionado.nombre}}</option>
@@ -142,8 +142,8 @@
                                 </div>
                             </div>
                             <div class="form-group col-12 text-right">
-                                <a class="btn btn-success text-white disabled" id="audioBuzon" onclick="transferencua('transMess');"><i class="fa fa-play-circle"></i>&nbsp;Buzon</a>
-                                <a class="btn btn-secondary cancelargestion text-white" data-src="Campaign"><i class="fa fa-ban"></i>&nbsp;Cancelar</a>
+                                <!-- <a class="btn btn-success text-white disabled" id="audioBuzon" onclick="transferencua('transMess');"><i class="fa fa-play-circle"></i>&nbsp;Buzon</a>
+                                <a class="btn btn-secondary cancelargestion text-white" data-src="Campaign"><i class="fa fa-ban"></i>&nbsp;Cancelar</a> -->
                                 <a class="btn btn-primary text-white" v-on:click="guardarGestion()" id="btnGuardarGestion"><i class="fa fa-edit"></i>&nbsp;Guardar</a>
                             </div>
                         </form>
@@ -170,23 +170,25 @@
                                         <tr class="text-center">
                                             <th>FECHA / HORA</th>
                                             <th>USUARIO</th>
-                                            <th>ACCIÓN</th>
-                                            <th>CONTACTO</th>
+                                            <th v-if="modulos_activos.includes('Acciones')">ACCIÓN</th>
+                                            <th v-if="modulos_activos.includes('Contacto')">CONTACTO</th>
+                                            <th v-if="modulos_activos.includes('Etapas')">ETAPA</th>
+                                            <th v-if="modulos_activos.includes('Perfiles')">PERFIL</th>
                                             <th>GESTIÓN</th>
-                                            <th>PERFIL</th>
                                             <th>TIEMPO GESTIÓN</th>
                                         </tr>
                                     </thead>
                                     <tbody class="text-center">
                                         <template v-for="historico in historico">
                                             <tr>
-                                                <td>@{{historico.fechagestion}}</td>
-                                                <td>@{{historico.login}}</td>
-                                                <td>@{{historico.accion}}</td>
-                                                <td>@{{historico.contacto}}</td>
-                                                <td>@{{historico.gestion}}</td>
-                                                <td>@{{historico.perfil}}</td>
-                                                <td>@{{historico.tiempogestion}}</td>
+                                                <td><b>@{{historico.fechagestion}}</b></td>
+                                                <td><b>@{{historico.login}}</b></td>
+                                                <td v-if="modulos_activos.includes('Acciones')"><b>@{{historico.accion}}</b></td>
+                                                <td v-if="modulos_activos.includes('Contacto')"><b>@{{historico.contacto}}</b></td>
+                                                <td v-if="modulos_activos.includes('Etapas')"><b>@{{historico.etapa}}</b></td>
+                                                <td v-if="modulos_activos.includes('Perfiles')"><b>@{{historico.perfil}}</b></td>
+                                                <td style="max-width: 200px;"><b>@{{historico.gestion}}</b></td>
+                                                <td><b>@{{historico.tiempogestion}}</b></td>
                                             </tr>
                                         </template>
                                     </tbody>
@@ -271,7 +273,36 @@
 <!-- Tu código de Vue.js -->
 <script>
     id = <?php echo $_GET['id'] ?>;
+    identificacion = <?php echo $_GET['identificacion'] ?>;
 
+
+    var tiempo = {
+        hora: 00,
+        minuto: 00,
+        segundo: 00,
+        segundos: 00
+    };
+
+    tiempo_corriendo = setInterval(function() {
+        // Segundos
+        tiempo.segundos++;
+        tiempo.segundo++;
+        if (tiempo.segundo >= 60) {
+            tiempo.segundo = 00;
+            tiempo.minuto++;
+        }
+
+        // Minutos
+        if (tiempo.minuto >= 60) {
+            tiempo.minuto = 00;
+            tiempo.hora++;
+        }
+
+        $("#horas").val(tiempo.hora);
+        $("#minutos").val(tiempo.minuto);
+        $("#segundos").val(tiempo.segundo);
+        $("#segundostotales").val(tiempo.segundos);
+    }, 1000);
 
 
     $(document).ready(function() {
@@ -317,14 +348,20 @@
             },
             async getData() {
 
+                json = {
+                    'id': id,
+                    'identificacion': identificacion
+                }
+
                 const response = await fetch("/getdataproceso", {
                     method: "POST",
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify(id),
+                    body: JSON.stringify(json),
                 });
+
                 const data = await response.json();
                 this.getKey(data.procesos);
                 this.getModulesActivos(data)
@@ -407,8 +444,34 @@
                     },
                     body: JSON.stringify(data),
                 });
+
+                $('#formGestion .form-control:visible:not(.noFilt)').each(function() {
+                    if ($(this).val() == '') {
+                        $(this).removeClass('is-valid');
+                        $(this).addClass('is-invalid');
+                        a++;
+                    } else {
+                        $(this).removeClass('is-invalid');
+                        $(this).addClass('is-valid');
+                    }
+                });
                 this.getData();
+                this.resetForm();
+
+            },
+            resetForm() {
+                this.accion_selected = ''
+                this.contacto_selected = ''
+                this.perfil_selected = ''
+                document.getElementById('textSpeach').value = ''
+                document.getElementById('fecha_agendado').value = ''
+                tiempo.segundo = 00;
+                tiempo.minuto = 00;
+                tiempo.hora = 00;
+                document.getElementById('contacto').style.display = 'none'
+                document.getElementById('perfil').style.display = 'none'
             }
+
 
         }
     });

@@ -17,7 +17,7 @@ class Controlleradministraciongestion extends Controller
         $accion = ModelGestion::getAccion();
         $mtvonopago = ModelGestion::getMtvonoPago();
         $actividad = ModelGestion::getActividadEconomica();
-        $tipocontacto = ModelGestion::getTipoContacto();
+        $contacto = ModelGestion::getTipoContacto();
         $etapa = ModelGestion::getEtapaAdmin();
         $modulos = ModelGestion::modulos_gestion();
         $modulos_activos = ModelGestion::modulos_gestion_activos();
@@ -30,7 +30,7 @@ class Controlleradministraciongestion extends Controller
             'accion' => $accion,
             'mtvonopago' => $mtvonopago,
             'actividad' => $actividad,
-            'tipocontacto' => $tipocontacto,
+            'contacto' => $contacto,
             'etapa' => $etapa,
             'modulos' => $modulos,
             'modulos_activos' => $modulos_activos,
@@ -38,6 +38,18 @@ class Controlleradministraciongestion extends Controller
             'perfil_admin' => $perfil_admin,
             'perfil_admin_edit' => $perfil_admin_edit,
         ]);
+    }
+    public function deshabilitarcontacto()
+    {
+        $id = request()[0];
+        $etapa = ModelAdministracion::deshabilitarcontacto($id);
+        return self::getAdminGestion();
+    }
+    public function habilitarcontacto()
+    {
+        $id = request()[0];
+        $etapa = ModelAdministracion::habilitarcontacto($id);
+        return self::getAdminGestion();
     }
     public function deshabilitaretapa()
     {

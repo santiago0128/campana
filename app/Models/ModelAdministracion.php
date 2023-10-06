@@ -10,6 +10,18 @@ use Illuminate\Pagination\Paginator;
 class ModelAdministracion extends Model
 {
 
+    public static function deshabilitarcontacto($id)
+    {
+        $query = "UPDATE sys.contacto set idestatus = 0 where id = $id";
+        $usuarios = DB::connection('pgsql')->select($query);
+        return $usuarios;  
+    }
+    public static function habilitarcontacto($id)
+    {
+        $query = "UPDATE sys.contacto set idestatus = 1 where id = $id";
+        $usuarios = DB::connection('pgsql')->select($query);
+        return $usuarios;  
+    }
     public static function deshabilitarEtapa($id)
     {
        

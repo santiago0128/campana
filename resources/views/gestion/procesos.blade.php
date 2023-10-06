@@ -98,7 +98,7 @@
                                         <template v-for="item2 in keys">
                                             <td>@{{item[item2]}}</td>
                                         </template>
-                                        <td><a :href="'/verProceso?id=' + item.id"  class="btn btn-primary">Ver</a></td>
+                                        <td><a :href="'/verProceso?id=' + item.id + '&identificacion=' + item.identificacion"  class="btn btn-primary">Ver</a></td>
                                     </tr>
                                 </template>
                             </tbody>
