@@ -7,11 +7,18 @@ use App\Models\ModelProceso;
 use App\Models\ModelUsuario;
 use App\Models\ModelClientes;
 use Illuminate\Support\Facades\DB;
-use Symfony\Component\VarDumper\VarDumper;
 use Illuminate\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
+
+    public function index(){
+        session(['idUsuario' => $_GET['idUsuario']]);
+
+        $usuario = ModelUsuario::getUsuariosId(session('idUsuario'));
+        return view('inicio')->with('usuario', $usuario);
+    }
+
     public function portafolio()
     {
         if(isset($_GET['procesos'])){

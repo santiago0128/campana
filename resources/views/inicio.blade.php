@@ -5,12 +5,11 @@
         <div class="row container">
             <div class="col-lg-5 col-md-8 col-sm-12">
                 <h1>
-                    <li class=" fa fa-home"></li>Inicio
+                    <li class="fa fa-home"></li>Inicio
                 </h1>
             </div>
         </div>
     </div>
-
     <div class="row clearfix">
         <div class="col-12">
             <div class="card top_report">

@@ -10,29 +10,17 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class ModelUsuario extends Model
 {
 
-   
-
-
-    public static function insertarUsuario($nombre, $apellido, $correo, $identificacion, $rol, $telefono, $celular, $usuario, $contrasena)
-    {
-        $contrasena2 = md5($contrasena);
-        $data = DB::connection('pgsql')
-            ->select('SELECT * FROM sys.insertusuarios(?,?,?,?,?,?,?,?,?)', [$nombre, $apellido, $correo, $identificacion, $rol, $telefono, $celular, $usuario, $contrasena2]);
-        return $data;
-    }
-    public static function getRolUsuario()
-    {
-        $rol = DB::connection('pgsql')
-            ->select('SELECT * FROM sys.roles');
-        return $rol;
-    }
     public static function getUsuarios()
     {
-        $query = "select * from sys.dblink('dbname=cct_adm user=postgres password=N3xtG3n2020//*', 'SELECT  usuarios.idusu, usuarios.documento, usuarios.logusu,usuarios.nomusu ,usuarios.apeusu FROM sys.usuarios ') usuarios(idusu int, documento bigint, logusu text,nomusu text, apeusu text)";
-        $usuarios = DB::connection('pgsql')->select($query);
-        $result = new Paginator($usuarios, 10);       
-        return $result;  
-        
+        $query = "SELECT * FROM dblink('dbname=postgres user=postgres password=santiago10.', 'SELECT id,name,email,rol,campanas,activo FROM users') AS t(id INT, name TEXT,email TEXT,rol TEXT,campanas TEXT,activo TEXT)";
+        $resultados = DB::select($query);
+        return $resultados;  
+    }
+    public static function getUsuariosId($id)
+    {
+        $query = "SELECT * FROM dblink('dbname=postgres user=postgres password=santiago10.', 'SELECT id,name,email,rol,campanas,activo FROM users where id = $id') AS t(id INT, name TEXT,email TEXT,rol TEXT,campanas TEXT,activo TEXT)";
+        $resultados = DB::select($query);
+        return $resultados;  
     }
     
     

@@ -20,7 +20,10 @@ use App\Http\Controllers\Controlleradministraciongestion;
 
 
 
-Route::get('/', function () {return view('inicio');});
+Route::get('/', [Controller::class, 'index']);
+
+
+
 Route::get('/administracion', [Controller::class, 'administracion']);
 Route::get('/portafolio', [Controller::class, 'portafolio']);
 Route::get('/gestion', [Controller::class, 'gestion']);
@@ -57,8 +60,6 @@ Route::post('/buscarclientes', [Controllerclientes::class, 'consultarclientes'])
 Route::post('/buscarclientesfiltro', [Controllerclientes::class, 'consultarclientesFiltro']);
 
 Route::get('/administrargestion', [Controller::class, 'gestion']);
-
-
 Route::get('/getAdminGestion', [Controlleradministraciongestion::class, 'getAdminGestion']);
 
 Route::post('/deshabilitar', [Controlleradministraciongestion::class, 'deshabilitaretapa']);
@@ -97,3 +98,5 @@ Route::post('/habilitarperfil', [Controlleradministraciongestion::class, 'habili
 Route::post('/consultarperfil', [Controlleradministraciongestion::class, 'consultarperfil']);
 Route::post('/insertarperfil', [Controlleradministraciongestion::class, 'insertarperfil']);
 Route::post('/eliminar_perfil', [Controlleradministraciongestion::class, 'eliminar_perfil']);
+
+route::get('/getagenda', [Controllergestion::class, 'getAgenda']);

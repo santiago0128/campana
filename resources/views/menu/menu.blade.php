@@ -1,6 +1,5 @@
 
 
-
 <body class="theme-blue">
     <div class="page-loader-wrapper">
         <div class="loader">
@@ -13,11 +12,10 @@
     <div id="wrapper">
         <nav class="navbar navbar-fixed-top">
             <div class="container-fluid">
-
                 <div class="navbar-brand">
                     <a href="index.html">
-                        <img src="{{ asset('img/user.png')}}" alt="Mplify Logo" class="img-responsive logo">
-                        <span class="name">mplify</span>
+                        <img src="{{ asset('img/logo.png')}}" alt="Mplify Logo"  class="img-responsive logo">
+                        <span class="name" style="padding-left: 25px ;  color: #24c6dc; font-size: 25px;">vexa</span>
                     </a>
                 </div>
 
@@ -94,8 +92,8 @@
                             <a href="#uiElements" class="has-arrow"><i class=" icon-briefcase "></i><span>Gestión</span></a>
                             <ul>
                                 <li><a type="button" href="{{url('/gestion?tareas')}}" >Procesos</a></li>
-                                <!-- <li><a type="button" id="btncalendario">Calendario</a></li>
-                                <li><a href="ui-tabs.html">Flujos de Trabajo</a></li> -->
+                                <li><a type="button" href="{{url('/gestion?calendario')}}">Agenda</a></li>
+                                <!-- <li><a href="ui-tabs.html">Flujos de Trabajo</a></li> -->
                             </ul>
                         </li>
                         <li class="middle">

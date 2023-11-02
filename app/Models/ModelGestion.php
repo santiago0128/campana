@@ -40,13 +40,7 @@ class ModelGestion extends Model
         $data = DB::connection('pgsql')->select($sql);
         return $data;
     }
-    // public static function getPerfilGestion()
-    // {
-    //     $sql = "SELECT * FROM sys.perfilgestion";
-    //     $data = DB::connection('pgsql')->select($sql);
-    //     return $data;
 
-    // }
     public static function getMtvonoPago()
     {
         $sql = "SELECT * FROM sys.motivonopago";
@@ -168,7 +162,6 @@ class ModelGestion extends Model
     }
     public static function InsertarfechasProcesos($id, $fecha_entrega_garantias, $fecha_sentencia, $fecha_presentacion_demanda, $fecha_liquidacion_credito, $fecha_admision, $fecha_terminacion, $fecha_notificacion, $fecha_ultima_actualizacion)
     {
-
         $sql = "UPDATE sys.historicogestion SET  fecha_entrega_garantias='$fecha_entrega_garantias', fecha_sentencia='$fecha_sentencia', fecha_presentacion_demanda='$fecha_presentacion_demanda', fecha_liquidacion_credito='$fecha_liquidacion_credito', fecha_admision='$fecha_admision', fecha_terminacion='$fecha_terminacion', fecha_notificacion='$fecha_notificacion', fecha_ultima_actualizacion='$fecha_ultima_actualizacion' WHERE id = $id ";
         $data = DB::connection('pgsql')->select($sql);
         return $data;
@@ -176,37 +169,38 @@ class ModelGestion extends Model
 
     public static function getContactogestion($id)
     {
-
         $sql = "SELECT * from sys.contacto where accion_asignada = $id";
         $data = DB::connection('pgsql')->select($sql);
         return $data;
     }
     public static function getPerfilgestion($id)
     {
-
         $sql = "SELECT * from sys.perfil_gestion where contacto_asignado = $id";
         $data = DB::connection('pgsql')->select($sql);
         return $data;
     }
 
+    public static function getAgenda($idUsuario)
+    {
+        $sql = "SELECT * from sys.agenda";
+        $data = DB::connection('pgsql')->select($sql);
+        return $data; 
+    }
+
 
     public static function getHistorico($identificacion)
     {
-
         $sql = "SELECT h.fechagestion,h.gestion,h.login,h.tiempogestion,
         (select pg.nombre from sys.perfilgestion pg where h.idperfil = pg.id) as perfil,
         (select c.nombre from sys.contacto c where h.idcontacto = c.id) as contacto,
         (select e.nombre from sys.etapa e where h.etapa = e.id) as etapa,
         (select a.nombre from sys.acciongestion a  where h.idaccion = a.id) as accion
         from sys.historicogestion h where h.identificacion = $identificacion order by h.fechagestion desc";
-
-
         $data = DB::connection('pgsql')->select($sql);
         return $data;
     }
     public static function getUltimaEtapa($identificacion)
     {
-
         $sql = "SELECT e.nombre, e.bg, e.progreso from sys.historicogestion h inner join sys.etapa e on h.etapa = e.id where h.identificacion = $identificacion order by h.fechagestion desc limit 1";
         $data = DB::connection('pgsql')->select($sql);
         return $data;
