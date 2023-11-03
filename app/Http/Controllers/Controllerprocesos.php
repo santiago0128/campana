@@ -165,13 +165,4 @@ class Controllerprocesos extends Controller
             'perfil' => $perfil,
         ]);
     }
-
-    // public function descargarProceso()
-    // {
-
-    //     $body2 = json_decode($_POST['json']);
-    //     $body = implode(",", $body2);
-    //     $reporte = ModelProceso::getProcesos($body);
-    //     return Excel::download($reporte, 'invoices.xlsx');
-    // }
 }

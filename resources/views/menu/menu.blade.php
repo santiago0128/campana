@@ -1,5 +1,8 @@
 
-
+<?php 
+use App\Models\ModelUsuario;
+$usuario = ModelUsuario::getUsuariosId(session('idUsuario'));
+?>
 <body class="theme-blue">
     <div class="page-loader-wrapper">
         <div class="loader">
@@ -30,7 +33,6 @@
                         <li>
                             <form id="navbar-search" class="navbar-form search-form">
                                 <input value="" class="form-control" placeholder="Search here..." type="text">
-                                <button type="button" class="btn btn-default"><i class="icon-magnifier"></i></button>
                             </form>
                         </li>
                         <li>
@@ -46,20 +48,13 @@
                                                     <img src="assets/images/user-small.png" class="rounded" width="50" alt="">
                                                 </div>
                                                 <div class="drop-right">
-                                                    <h4>Samuel Morriss</h4>
-                                                    <p class="user-name">samuelmorris@info.com</p>
+                                                    <h4><?= $usuario[0]->name ?></h4>
+                                                    <p class="user-name"><?= $usuario[0]->email ?></p>
                                                 </div>
                                             </div>
                                             <div class="m-t-10 p-3 drop-list">
                                                 <ul class="list-unstyled">
-                                                    <li><a href="page-profile.html"><i class="icon-user"></i>Mi Perfil</a></li>
-                                                    <li><a href="app-inbox.html"><i class="icon-envelope-open"></i>Mi Cuenta</a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="javascript:void(0);"><i class="icon-settings"></i>Incio</a></li>
-                                                    <li><a href="javascript:void(0);"><i class="icon-settings"></i>Ayuda</a></li>
-                                                    <li><a href="javascript:void(0);"><i class="icon-settings"></i>Contacto</a></li>
-                                                    <li><a href="javascript:void(0);"><i class="icon-settings"></i>Settings</a></li>
-                                                    <li><a href="page-login.html"><i class="icon-power"></i>Cerrar Session</a></li>
+                                                    <li><a href="page-login.html"><i class="icon-power"></i>Salir</a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -83,8 +78,6 @@
                             <a href="#uiElements" class="has-arrow"><i class=" icon-briefcase "></i><span>Informacion</span></a>
                             <ul>
                                 <li><a type="button" id="btnprocesos">Procesos</a></li>
-                                <!-- <li><a type="button" id="btnmovimientos">Movimientos</a></li>
-                                <li><a type="button" id="btnnovedades" >Novedades</a></li> -->
                                 <li><a type="button" id="btnreportes">Reportes</a></li>
                             </ul>
                         </li>
@@ -96,15 +89,14 @@
                                 <!-- <li><a href="ui-tabs.html">Flujos de Trabajo</a></li> -->
                             </ul>
                         </li>
+                        <?php if ($usuario[0]->rol == 1){ ?>
                         <li class="middle">
                             <a href="#uiElements" class="has-arrow"><i class=" icon-briefcase "></i><span>Administración</span></a>
                             <ul>
-                                <!-- <li><a type="button" id="btnclientes">Clientes</a></li>
-                                <li><a type="button" id="btnusuarios">Usuarios</a></li> -->
-                                <!-- <li><a type="button" id="btnadmgestion">Gestion</a></li> -->
                                 <li><a type="button" href="{{url('/administracion?gestion')}}">Gestion</a></li>
                             </ul>
                         </li>
+                        <?php } ?>
                     </ul>
                 </nav>
             </div>

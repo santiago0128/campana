@@ -137,7 +137,7 @@
                                 <div class="col-lg-3 col-md-3 col-sm-12 col-12 " id="contenedor7">
                                     <div class="form-group">
                                         <label for="fecha_agendado">Fecha Agendado:</label>
-                                        <input type="date" autocomplete="off" name="fecha_agendado" id="fecha_agendado" class="form-control datetimepicker noFilt" placeholder="yyyy-mm-dd hh:mm">
+                                        <input type="datetime-local" autocomplete="off" name="fecha_agendado" id="fecha_agendado" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -425,6 +425,7 @@
 
 
                 data = {
+                    'id' : id,
                     'hora': hora,
                     'minuto': minuto,
                     'segundos': segundos,

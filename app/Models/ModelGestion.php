@@ -182,7 +182,7 @@ class ModelGestion extends Model
 
     public static function getAgenda($idUsuario)
     {
-        $sql = "SELECT * from sys.agenda";
+        $sql = "SELECT * from sys.agenda where usuario = $idUsuario";
         $data = DB::connection('pgsql')->select($sql);
         return $data; 
     }
@@ -205,4 +205,13 @@ class ModelGestion extends Model
         $data = DB::connection('pgsql')->select($sql);
         return $data;
     }
+
+    public static function agregarAgenda($fecha_agendado, $identificacion, $obligacion, $idproceso){
+        
+        $sql = "INSERT INTO sys.agenda (start, title, \"end\", idproceso, identificacion, usuario) VALUES ('".$fecha_agendado."','".$obligacion."', '".$fecha_agendado."', '".$idproceso."', '".$identificacion."','".session('idUsuario')."')";
+        $data = DB::connection('pgsql')->select($sql);
+        return 1;
+
+    }
+
 }
