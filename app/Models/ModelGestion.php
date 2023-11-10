@@ -145,6 +145,13 @@ class ModelGestion extends Model
         return 1;
     }
 
+    public static function getObligacion($identificacion, $obligacion){
+        $sql = "SELECT * from sys.obligaciones where identificacion = '$identificacion' and obligacion = '$obligacion'";
+        
+        $data = DB::connection('pgsql')->select($sql);
+        return $data;
+    }
+
 
     public static function InsertarGestion($gestion, $segundos_totales, $perfil, $contacto, $accion, $id, $ip, $identificacion,  $fecha_agendado, $login, $obligacion)
     {

@@ -1,7 +1,7 @@
 
-$( function() {
-  $( "#datepicker" ).datepicker();
-} );
+$(function () {
+  $("#datepicker").datepicker();
+});
 
 
 function procesos() {
@@ -242,7 +242,7 @@ function copyfile() {
     url: '/upload',
     type: "POST",
     data: datos,
-    contentType: false, 
+    contentType: false,
     processData: false,
     async: true,
     timeout: 1000000000,
@@ -265,13 +265,10 @@ function sendData() {
     dataType: "json",
     method: "POST",
     success: function (response) {
-
       $('#alert').html(response);
-
+      // window.location.reload();
     }, error: function (response) {
-
       $('#alert').html(response.responseText);
-
     }
 
   });

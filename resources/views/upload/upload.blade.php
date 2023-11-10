@@ -83,8 +83,8 @@
                         <div class="row mb-3">
                             <div class="col-12 text-center">
                                 <?php $dir = "/filesDownload"; ?>
-                                <a href=" <?php echo $dir ?>/estructuraProcesos.csv" download="estructuraProcesos.csv" class="btn btn-success"><i class="fas fa-file-csv"></i>&nbsp;Estructura Procesos</a>
-                                <a href=" <?php echo $dir ?>/plantillaProcesos.csv" download="plantillaProcesos.csv" class="btn btn-success"><i class="fas fa-file-csv"></i>&nbsp;Plantilla Procesos</a>
+                                <a href=" <?php echo $dir ?>/estructuraProcesos.csv" download="estructuraProcesos.csv" class="btn btn-success"><i class="fas fa-file-csv"></i>&nbsp;Procesos</a>
+                                <a href=" <?php echo $dir ?>/plantillaProcesos.csv" download="plantillaProcesos.csv" class="btn btn-success"><i class="fas fa-file-csv"></i>&nbsp;Estructura</a>
                             </div>
                         </div>
                     </div>

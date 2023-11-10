@@ -93,11 +93,27 @@ class ModelProceso extends Model
     }
     public static function InsertarProceso($url, $schema)
     {
+        $schema = str_replace(' ', '', $schema);
         try {
             DB::connection('pgsql')->select(" truncate table sys.procesos RESTART IDENTITY ");
             DB::connection('pgsql')->select("COPY sys.procesos ($schema) FROM '$url' DELIMITER ';' CSV HEADER ENCODING 'LATIN1'");
             return ('Proceso Guardado');
         } catch (PDOException $th) {
+            $returnedData[0] = $th->getMessage();
+            die(json_encode($returnedData));
+        }
+    }
+    public static function insertarObligaciones(){
+
+        DB::connection('pgsql')->select(" truncate table sys.obligaciones RESTART IDENTITY ");
+        $procesos = self::Procesosall();
+        try {
+            for ($i=0; $i <count($procesos) ; $i++) { 
+                $identificacion = $procesos[$i]->identificacion;
+                $obligacion = $procesos[$i]->obligacion;
+                DB::connection('pgsql')->select("INSERT INTO sys.obligaciones (obligacion, identificacion, estado) VALUES('$obligacion', '$identificacion', 'Pendiente');");
+            }
+        } catch (\Throwable $th) {
             $returnedData[0] = $th->getMessage();
             die(json_encode($returnedData));
         }

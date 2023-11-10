@@ -41,7 +41,7 @@ class Controllerprocesos extends Controller
         $table .= "<input type='hidden' name='dataFile' value='" . $dir . "'>";
         $table .= "<input type='hidden' name='url' value='" . $dir . "'>";
         $table .= '<h5>Total de los registros del archivo:' . $totalRegistros . '</h5><br>';
-        $table .= '<button class="btn btn-primary text-white" type="button" onclick="sendData()"><i class="fa fa-upload"></i>&nbsp;Cargar Data</button>';
+        $table .= '<button class="btn btn-primary text-white" id="btn_cargar" type="button" onclick="sendData()"><i class="fa fa-upload"></i>&nbsp;Cargar Data</button>';
         $table .= '<br>';
         $table .= '<span class="progresocargadatos"></span>';
         $table .= '</div>';
@@ -53,31 +53,40 @@ class Controllerprocesos extends Controller
 
     public function uploadfile()
     {
-        $schema_table = DB::table('sys.schema_procesos')->select('nombre')->get();
-        $esquema = [];
-        for ($i = 0; $i < count($schema_table); $i++) {
-            array_push($esquema,  $schema_table[$i]->nombre);
-        }
         
         if ($_POST['tipo_cargue'] == "estructura") {
+            
             $file = ModelProceso::InsertarEstructura($_POST['url']);
             Artisan::call('migrate');
-            $archivo = public_path('filesDownload\estructuraProcesos.csv'); // Ruta al archivo de texto plano existente
-            
+            $archivo = public_path('filesDownload\estructuraProcesos.csv');
+            $esquema = self::getSchemaProcesos();
             $schema = implode(';', $esquema);
-            $nuevoContenido = "$schema";
-            File::put($archivo, $nuevoContenido);
+            File::put($archivo, $schema);
         } else {
             
+            $esquema = self::getSchemaProcesos();
             $schema = implode(',', $esquema);
-            
             $file = ModelProceso::InsertarProceso($_POST['url'], $schema);
+            ModelProceso::InsertarObligaciones();
         }
 
         $alert = '<div class="alert alert-success" role="alert">' . $file . '</div>';
 
         die(print($alert));
     }
+
+    public static function getSchemaProcesos()
+    {
+        $esquema = [];
+        $schema_table = DB::table('sys.schema_procesos')->select('nombre')->get();
+        for ($i = 0; $i < count($schema_table); $i++) {
+            array_push($esquema,  $schema_table[$i]->nombre);
+        }
+        return $esquema;
+    }
+
+
+
     public function buscarReporteProcesos()
     {
 
@@ -95,7 +104,7 @@ class Controllerprocesos extends Controller
     }
     public function buscarReporteProcesosfiltro()
     {
-        
+
         $obligacion = request()['obligacion'];
         $identificacion = request()['identificacion'];
         $fecha_desde = request()['fecha_limite_desde'];
@@ -120,13 +129,15 @@ class Controllerprocesos extends Controller
         return view('gestion.gestion_procesos');
     }
 
-    public function getdataproceso(){
+    public function getdataproceso()
+    {
 
 
         $id = request()['id'];
         $identificacion = request()['identificacion'];
         $procesos = ModelProceso::getProcesosIdentificacion($id);
         $historico = ModelGestion::getHistorico($identificacion);
+        $obligaciones = ModelGestion::getobligacion($identificacion, $procesos[0]->obligacion);
         $accion = ModelGestion::getAccion();
         $mtvonopago = ModelGestion::getMtvonoPago();
         $actividad = ModelGestion::getActividadEconomica();
@@ -145,11 +156,12 @@ class Controllerprocesos extends Controller
             'modulo_gestion' => $modulo_gestion,
             'mtvonopago' => $mtvonopago,
             'perfil' => $perfil,
+            'obligaciones' => $obligaciones,
         ]);
-
     }
 
-    public function activarcontacto(){
+    public function activarcontacto()
+    {
 
         $id = request()[0];
         $contacto = ModelGestion::getContactogestion($id);
@@ -157,7 +169,8 @@ class Controllerprocesos extends Controller
             'contacto' => $contacto,
         ]);
     }
-    public function activarperfil(){
+    public function activarperfil()
+    {
 
         $id = request()[0];
         $perfil = ModelGestion::getPerfilgestion($id);

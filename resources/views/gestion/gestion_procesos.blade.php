@@ -22,23 +22,21 @@
                 </div>
             </div>
         </div>
-        <div v-if="modulos_activos.includes('Etapas')" class="col-12">
+        <div  class="col-12">
             <div class="card">
                 <div class="header">
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6" style="padding-left: 10px;">
                             <h4>
-                                <li class=" fa fa-bars"></li>&nbsp;Estado Proceso
+                                <li class=" fa fa-bars"></li>&nbsp;Estado Proceso: @{{obligaciones[0].estado}}
                             </h4>
                         </div>
                     </div>
                 </div>
-                <div class="body">
+                <div v-if="modulos_activos.includes('Etapas')" class="body">
                     <div id="etapa_proceso">
                         <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated " role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: <?php //echo $progreso 
-                                                                                                                                                                                            ?>%; background-color: <?php //echo $bg 
-                                                                                                                                                                                                                    ?>"></div>
+                            <div class="progress-bar progress-bar-striped progress-bar-animated " role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: <?php //echo $progreso ?>"></div>
                         </div>
                     </div>
                     <div>
@@ -277,10 +275,10 @@
 
 
     var tiempo = {
-        hora: 00,
-        minuto: 00,
-        segundo: 00,
-        segundos: 00
+        hora: '00',
+        minuto: '00',
+        segundo: '00',
+        segundos: '00'
     };
 
     tiempo_corriendo = setInterval(function() {
@@ -288,13 +286,13 @@
         tiempo.segundos++;
         tiempo.segundo++;
         if (tiempo.segundo >= 60) {
-            tiempo.segundo = 00;
+            tiempo.segundo = '00';
             tiempo.minuto++;
         }
 
         // Minutos
         if (tiempo.minuto >= 60) {
-            tiempo.minuto = 00;
+            tiempo.minuto = '00';
             tiempo.hora++;
         }
 
@@ -328,11 +326,11 @@
             contacto_seleccionado: {},
             contacto_selected: '',
             perfil_seleccionado: {},
-            perfil_selected: ''
+            perfil_selected: '',
+            obligaciones: {}
         },
         mounted() {
             this.getData()
-
         },
         methods: {
             binding(data) {
@@ -345,6 +343,7 @@
                 this.modulo_gestion = data.modulo_gestion
                 this.mtvonopago = data.mtvonopago
                 this.perfil = data.procesos
+                this.obligaciones = data.obligaciones
             },
             async getData() {
 
@@ -466,9 +465,9 @@
                 this.perfil_selected = ''
                 document.getElementById('textSpeach').value = ''
                 document.getElementById('fecha_agendado').value = ''
-                tiempo.segundo = 00;
-                tiempo.minuto = 00;
-                tiempo.hora = 00;
+                tiempo.segundo = '00';
+                tiempo.minuto = '00';
+                tiempo.hora = '00';
                 document.getElementById('contacto').style.display = 'none'
                 document.getElementById('perfil').style.display = 'none'
             }
