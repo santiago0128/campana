@@ -1,4 +1,3 @@
-<div id="main-content">
     <div class="block-header">
         <div class="row">
             <div class="col-lg-5 col-md-8 col-sm-12" style="padding-left: 50px;">

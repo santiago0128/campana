@@ -1,7 +1,6 @@
 
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<div id="main-content">
     <div class="block-header">
         <div class="row">
             <div class="col-lg-5 col-md-8 col-sm-12" style="padding-left: 50px;">

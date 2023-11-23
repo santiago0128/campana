@@ -3,6 +3,9 @@
 use App\Models\ModelUsuario;
 $usuario = ModelUsuario::getUsuariosId(session('idUsuario'));
 ?>
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
+</style>
 <body class="theme-blue">
     <div class="page-loader-wrapper">
         <div class="loader">
@@ -17,8 +20,8 @@ $usuario = ModelUsuario::getUsuariosId(session('idUsuario'));
             <div class="container-fluid">
                 <div class="navbar-brand">
                     <a href="index.html">
-                        <img src="{{ asset('img/logo.png')}}" alt="Mplify Logo"  class="img-responsive logo">
-                        <span class="name" style="padding-left: 25px ;  color: #24c6dc; font-size: 25px;">vexa</span>
+                        <img src="{{ asset('img/xion_logo.png')}}" style="width: 50px;" alt="Mplify Logo"  class="img-responsive logo">
+                        <span class="name" style="padding-left: 5px ;  color: #1a4d3e; font-size: 25px;">XION</span>
                     </a>
                 </div>
 
@@ -101,3 +104,5 @@ $usuario = ModelUsuario::getUsuariosId(session('idUsuario'));
                 </nav>
             </div>
         </div>
+    </div>
+</body>

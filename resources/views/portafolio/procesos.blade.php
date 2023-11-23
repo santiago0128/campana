@@ -1,4 +1,3 @@
-<div id="main-content">
     <div class="block-header">
         <div class="row">
             <div class="col-lg-5 col-md-8 col-sm-12" style="padding-left: 50px;">
@@ -37,7 +36,7 @@
 
                         <div class="body">
                             <div class="row">
-                                <div class="col-5 col-sm-5 col-md-10 col-lg-10">
+                                <div class="col-6 col-sm-6 col-md-6 col-lg-6">
                                     <select id="multiselect1" name="multiselect1" multiple class="form-control">
                                         @foreach ($shema as $data)
                                         <option value="{{$data->columnas}}">{{$data->columnas}}</option>
@@ -45,19 +44,18 @@
                                     </select>
 
                                 </div>
-                                <div class="col-1 col-sm-1 col-md-2 col-lg-2">
+                                <div class="col-6 col-sm-6 col-md-6 col-lg-6">
                                     <div class="input-group-append">
                                         <button class="btn btn-primary btn-small" onclick="tabla()" id="btnagrupadores" type="button">
                                             Buscar <i class="icon-search"></i>
                                         </button>
                                         &nbsp;
                                         &nbsp;
-                                        <button class="btn btn-success btn-small"  id="btnreporte" type="button">
+                                        <button class="btn btn-success"  id="btnreporte" type="button">
                                             Descargar Reporte <i class="icon-search"></i>
                                         </button>
                                     </div>
                                 </div>
-                                
                             </div>
                         </div>
                     </div>

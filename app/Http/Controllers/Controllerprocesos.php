@@ -33,14 +33,36 @@ class Controllerprocesos extends Controller
 
         $totalRegistros = count($linea_de_texto);
 
-        $table = '<div class="col-6 card">';
+        for ($i = 1; $i < count($linea_de_texto); $i++) {
+            $data[] = $linea_de_texto[$i];
+        }
+        
+
+        $table = '<div class="">';
         $table .= '<form method="POST" id="formUploadFile">';
         $table .= '<div class="form-group text-center">';
         $table .= '<input type="hidden" name="uploadFile" value="uploadFile">';
         $table .= "<input type='hidden' name='tipo_cargue' value='" . $tipo_carga . "'>";
         $table .= "<input type='hidden' name='dataFile' value='" . $dir . "'>";
         $table .= "<input type='hidden' name='url' value='" . $dir . "'>";
-        $table .= '<h5>Total de los registros del archivo:' . $totalRegistros . '</h5><br>';
+        $table .= "<table class='table'>";
+        $table .= " <thead>";
+        $table .= " <tr>";
+        foreach ($linea_de_texto[0] as $value) {
+            $table .= " <th> $value </th>";
+        }
+        $table .= "  </tr>";
+        $table .= " </thead>";
+        $table .= " <tbody>";
+        for ($i = 1; $i < count($linea_de_texto); $i++) {
+            // $table .= "<tr>";
+            // for ($j = 0; $j < count($linea_de_texto[$i]); $j++) {
+            //  $table .=  $linea_de_texto[1][$j];
+            // }
+            // $table .= "</tr>";
+        }
+        $table .= " <tbody>";
+        $table .= "</table>";
         $table .= '<button class="btn btn-primary text-white" id="btn_cargar" type="button" onclick="sendData()"><i class="fa fa-upload"></i>&nbsp;Cargar Data</button>';
         $table .= '<br>';
         $table .= '<span class="progresocargadatos"></span>';
@@ -53,9 +75,9 @@ class Controllerprocesos extends Controller
 
     public function uploadfile()
     {
-        
+
         if ($_POST['tipo_cargue'] == "estructura") {
-            
+
             $file = ModelProceso::InsertarEstructura($_POST['url']);
             Artisan::call('migrate');
             $archivo = public_path('filesDownload\estructuraProcesos.csv');
@@ -63,15 +85,13 @@ class Controllerprocesos extends Controller
             $schema = implode(';', $esquema);
             File::put($archivo, $schema);
         } else {
-            
+
             $esquema = self::getSchemaProcesos();
             $schema = implode(',', $esquema);
             $file = ModelProceso::InsertarProceso($_POST['url'], $schema);
             ModelProceso::InsertarObligaciones();
         }
-
         $alert = '<div class="alert alert-success" role="alert">' . $file . '</div>';
-
         die(print($alert));
     }
 

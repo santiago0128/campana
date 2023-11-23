@@ -1,12 +1,11 @@
 <!doctype html>
 <html lang="en">
-@include('menu/header');
-@include('menu/menu');
+
+@include('menu/header')
+@include('menu/menu_prueba')
 <div id="demo">
     @yield('contenido')
 </div>
-</body>
-
-@include('menu/footer');
+@include('menu/footer')
 
 </html>
