@@ -20,18 +20,17 @@
     </div>
     <div class="col-12">
         <div class="card">
-            <div class="header">
+            <div class="header" :style="{ 'border': (obligaciones[0].estado === 'Cerrado') ? '3px solid red' : '3px solid green' }">
                 <div class="row">
                     <h4>
-                        <li class=" fa fa-bars"></li>&nbsp;Estado Proceso: @{{obligaciones[0].estado}}
+                        <li class="fa fa-bars"></li>&nbsp;Estado Proceso: @{{obligaciones[0].estado}}
                     </h4>
                 </div>
             </div>
             <div v-if="modulos_activos.includes('Etapas')" class="body">
                 <div id="etapa_proceso">
                     <div class="progress">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated " role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: <?php //echo $progreso 
-                                                                                                                                                                                        ?>"></div>
+                        <div class="progress-bar progress-bar-striped progress-bar-animated " role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: <?php //echo $progreso ?>"></div>
                     </div>
                 </div>
                 <div>

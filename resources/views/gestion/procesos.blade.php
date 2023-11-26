@@ -1,7 +1,6 @@
 @extends('inicio.index')
 @section('contenido')
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-<div id="app">
+<div id="procesos">
     <div class="block-header">
         <div class="row">
             <div class="col-lg-5 col-md-8 col-sm-12" style="padding-left: 50px;">
@@ -97,7 +96,7 @@
                                     <template v-for="item2 in keys">
                                         <td>@{{item[item2]}}</td>
                                     </template>
-                                    <td><a :href="'/verProceso?id=' + item.id + '&identificacion=' + item.identificacion" class="btn btn-primary">Ver</a></td>
+                                    <td><a :href="'/verProceso?id=' + item.id + '&identificacion=' + item.identificacion +'&obligacion='+ item.obligacion" class="btn btn-primary">Ver</a></td>
                                 </tr>
                             </template>
                         </tbody>
@@ -111,7 +110,7 @@
                                 </a>
                             </li>
                             <template v-for="cantidad in cant_pag">
-                                <li class="page-item"><a class="page-link" href="#">@{{cantidad}}</a></li>
+                                <li class="page-item"><a class="page-link" @click="gopage(cantidad)">@{{cantidad}}</a></li>
                             </template>
                             <li class="page-item">
                                 <a class="page-link" @click="siguiente()" aria-label="Next">
@@ -127,12 +126,10 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <!-- Tu código de Vue.js -->
 <script>
     var app = new Vue({
-        el: '#app',
+        el: '#procesos',
         data: {
             procesos: {},
             keys: {},
@@ -140,6 +137,7 @@
             inicio: 0,
             fin: 5,
             cant_pag: 0,
+            index: 1,
         },
         mounted() {
             this.getData()
@@ -147,8 +145,8 @@
         methods: {
             binding(data) {
                 this.data = data
-                this.cant_pag = Math.ceil(data.length / this.fin);
                 this.procesos = data.slice(this.inicio, this.fin)
+                this.cant_pag = Math.ceil(data.length / this.fin);
             },
             siguiente() {
                 this.fin = this.fin + 6
@@ -158,8 +156,16 @@
             anterior() {
                 this.fin = this.fin - 6
                 this.inicio = this.inicio - 6
+                console.log(this.inicio, this.fin);
                 this.procesos = this.data.slice(this.inicio, this.fin)
             },
+            gopage(page) {
+                const itemsPerPage = 5; 
+                this.inicio = (page - 1) * itemsPerPage;
+                this.fin = this.inicio + itemsPerPage;
+                this.procesos = this.data.slice(this.inicio, this.fin)
+            },
+           
             async getData() {
 
                 let obligacion = document.getElementById('obligacion').value

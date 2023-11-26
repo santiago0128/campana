@@ -41,7 +41,6 @@
         align-items: center;
         justify-content: space-between;
         padding: 0 1rem;
-        z-index: var(--z-fixed);
         transition: .5s
     }
 
@@ -76,7 +75,7 @@
         z-index: var(--z-fixed)
     }
 
-    .nav {
+    .nav_menu {
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -122,7 +121,7 @@
         font-size: 1.25rem
     }
 
-    .show {
+    .show_navbar {
         left: 0
     }
 
@@ -158,7 +157,194 @@
         font-size: 20px;
     }
 
+    .action {
+        position: fixed;
+        top: 20px;
+        right: 30px;
+    }
 
+    .action2 {
+        position: fixed;
+        top: 20px;
+        left: 20%;
+        z-index: 1;
+
+    }
+
+    .action .profile {
+        position: relative;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .action .profile img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .action .menu {
+        position: absolute;
+        top: 120px;
+        right: -10px;
+        padding: 10px 10px;
+        background: #c0c0c0;
+        width: 250px;
+        box-sizing: 0 5px 25px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        transition: 0.5s;
+        visibility: hidden;
+        opacity: 0;
+    }
+
+    .action2 .report {
+        position: absolute;
+        top: 120px;
+        padding: 10px;
+        background: #c0c0c0;
+        width: 1200px;
+        border-radius: 15px;
+        transition: 0.5s;
+        visibility: hidden;
+        opacity: 0;
+    }
+
+    .action .menu.active {
+        top: 50px;
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .action2 .report.active {
+        top: 50px;
+        visibility: visible;
+        opacity: 1;
+    }
+
+
+
+    .action .menu h3 {
+        width: 100%;
+        text-align: center;
+        font-size: 18px;
+        padding: 20px 0;
+        font-weight: 500;
+        color: #555;
+        line-height: 1.5em;
+    }
+
+    .action2 .report h3 {
+        width: 100%;
+        text-align: center;
+        font-size: 18px;
+        padding: 20px 0;
+        font-weight: 500;
+        color: #555;
+        line-height: 1.5em;
+    }
+
+    .action .menu h3 span {
+        font-size: 14px;
+        color: #cecece;
+        font-weight: 300;
+    }
+
+    .action .menu ul li {
+        list-style: none;
+        padding: 16px 0;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+        display: flex;
+        align-items: center;
+    }
+
+    .action .menu ul li img {
+        max-width: 20px;
+        margin-right: 10px;
+        opacity: 0.5;
+        transition: 0.5s;
+    }
+
+    .action .menu ul li:hover img {
+        opacity: 1;
+    }
+
+    .action .menu ul li a {
+        display: inline-block;
+        text-decoration: none;
+        color: #555;
+        font-weight: 500;
+        transition: 0.5s;
+    }
+
+    .action .menu ul li:hover a {
+        color: gray;
+    }
+
+    .circle {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        margin-bottom: 20px;
+    }
+    .circle_alert {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        margin-bottom: 20px;
+    }
+
+    .icon_prod {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        margin-bottom: 20px;
+    }
+
+    .green {
+        background-color: green;
+    }
+
+    .red {
+        background-color: red;
+    }
+
+    .yellow {
+        background-color: #FACC2E;
+    }
+
+    .menu_content {
+        background-color: #fff;
+        border-radius: 5px;
+        padding: 1px;
+    }
+
+    .report_content {
+        background-color: #fff;
+        border-radius: 5px;
+        padding: 1px;
+    }
+
+    .circle-with-text {
+        display: inline-block;
+        vertical-align: top;
+        margin-right: 20px;
+    }
+
+    .square {
+        width: 130px;
+        height: 35px;
+        border: 2px solid #c0c0c0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 20px;
+    }
 
     @media screen and (min-width: 768px) {
         body {
@@ -185,7 +371,7 @@
             padding: 1rem 1rem 0 0
         }
 
-        .show {
+        .show_navbar {
             width: calc(var(--nav-width) + 156px)
         }
 
@@ -196,76 +382,251 @@
 </style>
 
 <body id="body-pd">
-    <header class="header" id="header">
-        <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
-    </header>
-    <div class="l-navbar" id="nav-bar">
-        <nav class="nav">
-            <div>
-                <a href="{{ url('/') }}" class="nav_logo"><img style="width: 120px; " src="{{ asset('img/xion.png')}}" alt="Mplify Logo" class="img-responsive logo">
-                    <div class="nav_list">
-                        <a href="#" class="nav_link active">
-                            <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Inicio</span>
-                        </a>
-                        <a type="button" id="btnprocesos" class="nav_link">
-                            <i class='bx bx-folder nav_icon'></i> <span class="nav_name">Procesos</span>
-                        </a>
-                        <a href="{{url('/gestion?calendario')}}" class="nav_link">
-                            <i class='bx bx-calendar nav_icon'></i><span class="nav_name">Agenda</span>
-                        </a>
-                        <a href="{{url('/gestion?tareas')}}" class="nav_link">
-                            <i class='bx bx-message-square-detail nav_icon'></i><span class="nav_name">Gestion</span>
-                        </a>
-                        <a href="{{url('/administracion?gestion')}}" class="nav_link">
-                            <i class='bx bx-bookmark nav_icon'></i> <span class="nav_name">Administracion</span>
-                        </a>
-                        <a href="#" class="nav_link">
-                            <i class='bx bx-bar-chart-alt-2 nav_icon'></i><span class="nav_name">Reportes</span>
-                        </a>
+    <div id="menu">
+        <header class="header" id="header" style="background-color: #fff; z-index: 1;">
+            <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i></div>
+            <div class="action row">
+                <div style="width: 50px;"></div>
+                <div v-if="data.rol == 1" class="icon_prod">
+                    <a @click="reportToggle()">
+                        <i class='bx bxs-bell-ring bx-md' style="color: #c0c0c0;"></i>
+                    </a>
+                </div>
+                <div style="width: 50px;"></div>
+                <div v-if="data.estado == 1" class="circle_alert green"></div>
+                <div v-if="data.estado == 2" class="circle_alert red"></div>
+                <div v-if="data.estado == 3" class="circle_alert yellow"></div>
+                &nbsp;
+                <div class="square">
+                    <span v-if="data.estado == 1">Disponible</span>
+                    <span v-if="data.estado == 2">No Disponible</span>
+                    <span v-if="data.estado == 3">Espera</span>
+                </div>
+                <div style="width: 50px;"></div>
+                <div class="profile col-6" @click="menuToggle();">
+                    <img src="{{ asset('img/user.png')}}" style="width: 35px; height: 35px;" />
+                </div>
+                <div class="menu">
+                    <div class="menu_content">
+                        <div class="row">
+                            <div class="col-2" style="display: inline;">
+                                <div class="circle green"></div>
+                            </div>
+                            <div class="col-10" style="text-align: center;">
+                                <a style="cursor: pointer" @click="estado('1')"><span>Disponible</span></a>
+                            </div>
+                            <div class="col-2">
+                                <div class="circle red"></div>
+                            </div>
+                            <div class="col-10" style="text-align: center;">
+                                <a style="cursor: pointer" @click="estado('2')"><span>No Disponible</span></a>
+                            </div>
+                            <div class="col-2">
+                                <div class="circle yellow"></div>
+                            </div>
+                            <div class="col-10" style="text-align: center;">
+                                <a style="cursor: pointer" @click="estado('3')"><span>Espera</span></a>
+                            </div>
+                            <div class="col-2">
+                                <div class="circle yellow"></div>
+                            </div>
+                            <div class="col-10" style="text-align: center;">
+                                <a style="cursor: pointer" @click="estado('4')"><span>Baño</span></a>
+                            </div>
+                            <div class="col-2">
+                                <div class="circle yellow"></div>
+                            </div>
+                            <div class="col-10" style="text-align: center;">
+                                <a style="cursor: pointer" @click="estado('5')"><span>Capacitacion</span></a>
+                            </div>
+                            <div class="col-2">
+                                <div class="circle yellow"></div>
+                            </div>
+                            <div class="col-10" style="text-align: center;">
+                                <a style="cursor: pointer" @click="estado('6')"><span>Retroalimentación</span></a>
+                            </div>
+                            <div class="col-2">
+                                <div class="circle yellow"></div>
+                            </div>
+                            <div class="col-10" style="text-align: center;">
+                                <a style="cursor: pointer" @click="estado('7')"><span>Almuerzo</span></a>
+                            </div>
+                            <div class="col-2">
+                                <div class="circle yellow"></div>
+                            </div>
+                            <div class="col-10" style="text-align: center;">
+                                <a style="cursor: pointer" @click="estado('8')"><span>Preturno</span></a>
+                            </div>
+                            <div class="col-2">
+                                <div class="circle yellow"></div>
+                            </div>
+                            <div class="col-10" style="text-align: center;">
+                                <a style="cursor: pointer" @click="estado('8')"><span>Proceso de Venta</span></a>
+                            </div>
+                        </div>
                     </div>
-            </div> <a href="#" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">SignOut</span> </a>
-        </nav>
+                </div>
+            </div>
+        </header>
+        <div class="l-navbar" id="nav-bar">
+            <nav class="nav_menu">
+                <div>
+                    <a href="{{ url('/') }}" class="nav_logo"><img style="width: 120px; " src="{{ asset('img/xion.png')}}" alt="Mplify Logo" class="img-responsive logo">
+                        <div class="nav_list">
+                            <a href="#" class="nav_link active">
+                                <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Inicio</span>
+                            </a>
+                            <a type="button" id="btnprocesos" class="nav_link">
+                                <i class='bx bx-folder nav_icon'></i> <span class="nav_name">Procesos</span>
+                            </a>
+                            <a href="{{url('/gestion?calendario')}}" class="nav_link">
+                                <i class='bx bx-calendar nav_icon'></i><span class="nav_name">Agenda</span>
+                            </a>
+                            <a href="{{url('/gestion?tareas')}}" class="nav_link">
+                                <i class='bx bx-message-square-detail nav_icon'></i><span class="nav_name">Gestion</span>
+                            </a>
+                            <a href="{{url('/administracion?gestion')}}" class="nav_link">
+                                <i class='bx bx-bookmark nav_icon'></i> <span class="nav_name">Administracion</span>
+                            </a>
+                            <a href="#" class="nav_link">
+                                <i class='bx bx-bar-chart-alt-2 nav_icon'></i><span class="nav_name">Reportes</span>
+                            </a>
+                        </div>
+                </div>
+                <div>
+                    <a class="nav_link" href="http://xion:8000/main?idUsuario=<?php echo session('idUsuario') ?>">
+                        <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">Salir</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+        <div class="action2">
+            <div class="report">
+                <div class="report_content">
+                    <div class=" text-center">
+                        <h4>Ranking de productividad</h4>
+                    </div>
+                    <div class="container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>dsafasdf</th>
+                                    <th>dsafasdf</th>
+                                    <th>dsafasdf</th>
+                                    <th>dsafasdf</th>
+                                    <th>dsafasdf</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>asdfasdf</td>
+                                    <td>asdfasdf</td>
+                                    <td>asdfasdf</td>
+                                    <td>asdfasdf</td>
+                                    <td>asdfasdf</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
 </body>
-<!--Container Main end-->
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function(event) {
+    var app = new Vue({
+        el: '#menu',
+        data: {
+            data: {},
+        },
+        mounted() {
+            this.getData()
 
-        const showNavbar = (toggleId, navId, bodyId, headerId) => {
-            const toggle = document.getElementById(toggleId),
-                nav = document.getElementById(navId),
-                bodypd = document.getElementById(bodyId),
-                headerpd = document.getElementById(headerId)
+            const showNavbar = (toggleId, navId, bodyId, headerId) => {
+                const toggle = document.getElementById(toggleId),
+                    nav = document.getElementById(navId),
+                    bodypd = document.getElementById(bodyId),
+                    headerpd = document.getElementById(headerId)
 
-            // Validate that all variables exist
-            if (toggle && nav && bodypd && headerpd) {
-                toggle.addEventListener('click', () => {
-                    // show navbar
-                    nav.classList.toggle('show')
-                    // change icon
-                    toggle.classList.toggle('bx-x')
-                    // add padding to body
-                    bodypd.classList.toggle('body-pd')
-                    // add padding to header
-                    headerpd.classList.toggle('body-pd')
-                })
+                // Validate that all variables exist
+                if (toggle && nav && bodypd && headerpd) {
+                    toggle.addEventListener('click', () => {
+                        // show_navbar navbar
+                        nav.classList.toggle('show_navbar')
+                        // change icon
+                        toggle.classList.toggle('bx-x')
+                        // add padding to body
+                        bodypd.classList.toggle('body-pd')
+                        // add padding to header
+                        headerpd.classList.toggle('body-pd')
+                    })
+                }
+            }
+
+            showNavbar('header-toggle', 'nav-bar', 'body-pd', 'header')
+
+            /*===== LINK ACTIVE =====*/
+            const linkColor = document.querySelectorAll('.nav_link')
+
+            function colorLink() {
+                if (linkColor) {
+                    linkColor.forEach(l => l.classList.remove('active'))
+                    this.classList.add('active')
+                }
+            }
+            linkColor.forEach(l => l.addEventListener('click', colorLink))
+        },
+        methods: {
+            binding(data) {
+                this.data = data
+            },
+            async getData() {
+
+                const response = await fetch("/getDataUsuarios", {
+                    method: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        "Content-Type": "application/json",
+                    },
+                });
+                const data = await response.json();
+                this.binding(data[0]);
+            },
+            async estado(item) {
+
+                fetch("/updateEstadoUsuarios?estado=" + item, {
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        "Content-Type": "application/json",
+                    },
+                });
+                this.getData()
+                location.reload()
+            },
+            menuToggle() {
+                const toggleMenu = document.querySelector(".menu");
+                toggleMenu.classList.toggle("active");
+            },
+            reportToggle() {
+                const toggleReport = document.querySelector(".report");
+                toggleReport.classList.toggle("active");
+            },
+            async cerrar_campana() {
+
+                const response = await fetch("http://xion:8000/?id=" + <?php echo session('idUsuario') ?>, {
+                    method: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        'Content-Type': 'application/json', // Tipo de contenido de la solicitud
+                        'Authorization': 'Bearer tuTokenJWT'
+                    },
+                    mode: 'no-cors', // Cambiado a 'cors' para permitir el envío de encabezados personalizados y acceso al contenido de la respuesta
+                });
+                const data = await response.json();
+                // window.close()
             }
         }
-
-        showNavbar('header-toggle', 'nav-bar', 'body-pd', 'header')
-
-        /*===== LINK ACTIVE =====*/
-        const linkColor = document.querySelectorAll('.nav_link')
-
-        function colorLink() {
-            if (linkColor) {
-                linkColor.forEach(l => l.classList.remove('active'))
-                this.classList.add('active')
-            }
-        }
-        linkColor.forEach(l => l.addEventListener('click', colorLink))
-
-        // Your code to run since DOM is loaded and ready
     });
 </script>

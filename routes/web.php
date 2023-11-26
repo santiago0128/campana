@@ -17,12 +17,7 @@ use App\Http\Controllers\Controlleradministraciongestion;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-
-
 Route::get('/', [Controller::class, 'index']);
-
-
 
 Route::get('/administracion', [Controller::class, 'administracion']);
 Route::get('/portafolio', [Controller::class, 'portafolio']);
@@ -30,6 +25,8 @@ Route::get('/gestion', [Controller::class, 'gestion']);
 Route::get('/inicio', [Controller::class, 'inicio']);
 
 Route::post('/save', [Controllerusuarios::class, 'insertarUsuarios']);
+Route::post('/getDataUsuarios', [Controllerusuarios::class, 'getUsuarioSession']);
+Route::get('/updateEstadoUsuarios', [Controllerusuarios::class, 'updateEstadoUsuario']);
 
 Route::get('/agregarprocesos', [Controllerprocesos::class, 'procesouploadfile']);
 Route::post('/upload', [Controllerprocesos::class, 'proceso_table_schema']);
@@ -46,7 +43,6 @@ Route::POST('/getdataproceso', [Controllerprocesos::class, 'getdataproceso']);
 
 Route::POST('/activarcontacto', [Controllerprocesos::class, 'activarcontacto']);
 Route::POST('/activarperfil', [Controllerprocesos::class, 'activarperfil']);
-
 
 
 

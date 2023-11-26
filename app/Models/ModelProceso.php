@@ -35,14 +35,25 @@ class ModelProceso extends Model
 
     }
 
+    public static function updateAbrirObligacion($identificacion, $obligacion){
+
+        $sql = ("UPDATE sys.obligaciones SET  estado='Abierto' where obligacion='$obligacion' and identificacion = $identificacion");
+        $report = DB::connection('pgsql')->select($sql);
+        return $report;
+    }
+    public static function updateCerrarObligacion($identificacion, $obligacion){
+
+        $sql = ("UPDATE sys.obligaciones SET  estado='Cerrado' where obligacion='$obligacion' and identificacion = $identificacion");
+        $report = DB::connection('pgsql')->select($sql);
+        return $report;
+    }
+
     public static function getProcesosIdentificacion($id){
 
         $sql = ("SELECT * from sys.procesos where id = '$id'");
         $report = DB::connection('pgsql')->select($sql);
         return $report;
-
     }
-
 
     public static function getProcesosfiltro($obligacion,$identificacion,$fecha_desde,$fecha_hasta,$estado)
     {

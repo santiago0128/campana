@@ -146,13 +146,17 @@ class Controllerprocesos extends Controller
 
     public function buscarProcesoId()
     {
+        $identificacion = request()['identificacion'];
+        $obligacion = request()['obligacion'];
+        $obligaciones = ModelGestion::getobligacion($identificacion, $obligacion);
+        if($obligaciones[0]->estado == 'Pendiente'){
+            ModelProceso::updateAbrirObligacion($identificacion, $obligacion);
+        }
         return view('gestion.gestion_procesos');
     }
 
     public function getdataproceso()
     {
-
-
         $id = request()['id'];
         $identificacion = request()['identificacion'];
         $procesos = ModelProceso::getProcesosIdentificacion($id);

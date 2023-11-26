@@ -24,6 +24,17 @@ class Controllerusuarios extends Controller
        ModelUsuario::insertarUsuario($nombre,$apellido,$correo,$identificacion,$rol,$telefono,$celular,$usuario,$contrasena);
      
     }
+
+    public function updateEstadoUsuario(){
+        $usuarioid = ModelUsuario::updateUsuariosEstado(session('idUsuario'), $_GET['estado']);
+        return $usuarioid;
+    }
+
+    public function getUsuarioSession()
+    {
+        $usuarioid = ModelUsuario::getUsuariosId(session('idUsuario'));
+        return $usuarioid;
+    }
    
 
 }

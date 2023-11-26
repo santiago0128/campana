@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\ModelGestion;
+use App\Models\ModelProceso;
 use App\Models\ModelUsuario;
 
 class Controllergestion extends Controller
@@ -12,6 +13,7 @@ class Controllergestion extends Controller
 
     public function saveGestion()
     {
+        
         $usuarioid = ModelUsuario::getUsuariosId(session('idUsuario'));
 
         $hora = request()['hora'];
@@ -28,7 +30,9 @@ class Controllergestion extends Controller
         $id = $usuarioid[0]->id;
         $ip = $_SERVER['REMOTE_ADDR'];
         $login = $usuarioid[0]->email;
-    
+        
+        ModelProceso::updateCerrarObligacion($identificacion, $obligacion);
+
         $fecha_agendado = !empty($fecha_agendado) ? $fecha_agendado : NULL;
 
         if (!empty($fecha_agendado)) {
