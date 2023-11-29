@@ -12,7 +12,7 @@
                 <ul class="breadcrumb justify-content-end">
                     <li class="breadcrumb-item"><a href="index.php"><i class="icon-home"></i></a></li>
                     <li class="breadcrumb-item active">Administracion</li>
-                    <li class="breadcrumb-item">Usuarios</li>
+                    <li class="breadcrumb-item">Gestion</li>
                 </ul>
             </div>
         </div>
@@ -21,21 +21,19 @@
     <div class="col-md-12">
         <div class="card">
             <div class="body">
-
                 <div class="body">
                     <button type="button" data-toggle="modal" data-target="#modulos" id="addusuarios" class="btn btn-success">
                         &nbsp; Modulos Gestion
                     </button>
                     <br>
                     <br>
-
                     <ul class="nav nav-tabs" id="modulos_activos">
                         <template v-for="item in modulos_activos">
                             <li class="nav-item"><a class="nav-link " data-toggle="tab" :href="'#'+item.href">@{{item.modulo}}</a></li>
                         </template>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane show active" id="etapas">
+                        <div class="tab-pane show " id="etapas">
                             <div class="row">
                                 <div class="col-2">
                                     <button type="button" data-toggle="modal" data-target="#addEtapa" id="addusuarios" class="btn btn-success">
@@ -72,18 +70,19 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="tab-pane" id="acciones">
-                            <div class="">
-                                <div class="card ">
+                        <div class="tab-pane show" id="acciones">
+                            <div class="row">
+                                <div class="col-2">
                                     <button type="button" data-toggle="modal" data-target="#addAccion" id="addusuarios" class="btn btn-success">
                                         <li class="fa fa-plus"></li> &nbsp; Agregar Accion
                                     </button>
+                                </div>
+                                <div class="col-2">
                                     <button type="button" data-toggle="modal" data-target="#editAccion" id="addusuarios" class="btn btn-primary">
                                         <li class="fa fa-pencil-square-o"></li> &nbsp; Editar Accion
                                     </button>
                                 </div>
                             </div>
-
                             <table class="table" id="table_admin_accion">
                                 <thead>
                                     <th class="">Nombre</th>
@@ -107,12 +106,14 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="tab-pane" id="contacto">
-                            <div class="">
-                                <div class="card ">
+                        <div class="tab-pane show" id="contacto">
+                            <div class="row">
+                                <div class="col-2">
                                     <button type="button" data-toggle="modal" data-target="#addContacto" id="addusuarios" class="btn btn-success">
                                         <li class="fa fa-plus"></li> &nbsp; Agregar Contacto
                                     </button>
+                                </div>
+                                <div class="col-2">
                                     <button type="button" data-toggle="modal" data-target="#editContacto" id="addusuarios" class="btn btn-primary">
                                         <li class="fa fa-pencil-square-o"></li> &nbsp; Editar Contacto
                                     </button>
@@ -142,12 +143,14 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="tab-pane" id="perfil">
-                            <div class="">
-                                <div class="card ">
+                        <div class="tab-pane show" id="perfil">
+                            <div class="row">
+                                <div class="col-2">
                                     <button type="button" data-toggle="modal" data-target="#addPerfil" id="addusuarios" class="btn btn-success">
                                         <li class="fa fa-plus"></li> &nbsp; Agregar Perfil
                                     </button>
+                                </div>
+                                <div class="col-2">
                                     <button type="button" data-toggle="modal" data-target="#editPerfil" id="addusuarios" class="btn btn-primary">
                                         <li class="fa fa-pencil-square-o"></li> &nbsp; Editar Perfil
                                     </button>
