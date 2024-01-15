@@ -76,4 +76,17 @@ class Controllergestion extends Controller
         $etapa = ModelGestion::getAgenda(session('idUsuario'));
         return $etapa;
     }
+
+    public function getranking(){
+
+        $ranking = ModelGestion::getRanking();
+        return $ranking;
+
+    }
+    public function salirCampana(){
+
+        $ranking = ModelUsuario::salirCampana();
+        return $ranking;
+
+    }
 }

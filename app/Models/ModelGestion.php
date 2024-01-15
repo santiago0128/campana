@@ -221,4 +221,10 @@ class ModelGestion extends Model
 
     }
 
+    public static function getRanking(){
+        $sql = "SELECT distinct login, count(*) from sys.historicogestion h group by login";
+        $data = DB::connection('pgsql')->select($sql);
+        return $data;
+    }
+
 }

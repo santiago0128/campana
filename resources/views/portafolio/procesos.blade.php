@@ -1,3 +1,6 @@
+@extends('inicio.index')
+@section('contenido')
+<div id="app">
     <div class="block-header">
         <div class="row">
             <div class="col-lg-5 col-md-8 col-sm-12" style="padding-left: 50px;">
@@ -28,185 +31,173 @@
         </div>
     </div>
 
-    <div class="col-md-12">
-        <div class="card">
+    <div class="block-header">
+        <div class="row">
+            <div class="col-lg-5 col-md-8 col-sm-12" style="padding-left: 50px;">
+                <h2>
+                    <li class="fa fa-edit"></li>&nbsp;Asignacion Procesos
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card top_report">
             <div class="body">
-                <div class="input-group">
-                    <div class="col-4 col-sm-4 col-md-4 col-md-6 col-lg-6">
-
-                        <div class="body">
-                            <div class="row">
-                                <div class="col-6 col-sm-6 col-md-6 col-lg-6">
-                                    <select id="multiselect1" name="multiselect1" multiple class="form-control">
-                                        @foreach ($shema as $data)
-                                        <option value="{{$data->columnas}}">{{$data->columnas}}</option>
-                                        @endforeach
-                                    </select>
-
-                                </div>
-                                <div class="col-6 col-sm-6 col-md-6 col-lg-6">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary btn-small" onclick="tabla()" id="btnagrupadores" type="button">
-                                            Buscar <i class="icon-search"></i>
-                                        </button>
-                                        &nbsp;
-                                        &nbsp;
-                                        <button class="btn btn-success"  id="btnreporte" type="button">
-                                            Descargar Reporte <i class="icon-search"></i>
-                                        </button>
-                                    </div>
-                                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-8 col-lg-8">
+                        <div>
+                            <h4>Tabla Procesos</h4>
+                        </div>
+                        <div class="table-responsive">
+                            <div class="table-responsive">
+                                <table id="miTabla" class="table">
+                                    <thead>
+                                        <tr>
+                                            <template v-for="item in keys">
+                                                <th>@{{item}}</th>
+                                            </template>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-center">
+                                        <template v-for="item in procesos">
+                                            <tr>
+                                                <template v-for="item2 in keys">
+                                                    <td>@{{item[item2]}}</td>
+                                                </template>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination">
+                                        <li class="page-item">
+                                            <a class="page-link" @click="anterior()" aria-label="Previous">
+                                                <span aria-hidden="true">&laquo;</span>
+                                                <span class="sr-only">Previous</span>
+                                            </a>
+                                        </li>
+                                        <template v-for="cantidad in cant_pag">
+                                            <li class="page-item"><a class="page-link" @click="gopage(cantidad)">@{{cantidad}}</a></li>
+                                        </template>
+                                        <li class="page-item">
+                                            <a class="page-link" @click="siguiente()" aria-label="Next">
+                                                <span aria-hidden="true">&raquo;</span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-12">
-        <div class="card">
-            <div class="body">
-                <div class="table-responsive">
-                    <table id="tablas" class="table">
-                        <thead>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="addProceso" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-            <div class="modal-content " style="background-color: #343a40;">
-                <div class="modal-body">
-                    <div class="row clearfix">
-                        <div class="col-lg-12 col-md-12 col-sm-12">
-                            <div class="card">
-                                <div class="header">
-                                    <h1>Nuevo Proceso</h1>
-                                </div>
-                                <div class="body wizard_validation">
-                                    <form id="wizard_with_validation" method="POST">
-
-                                        <h3>Datos del Proceso</h3>
-                                        <fieldset style="width: 100%;">
-                                            <div class="row clearfix">
-                                                <div class="col-4 col-sm-4 col-md-4 col-md-12 col-lg-12" style="padding-top: 5px;">
-                                                    <label for="">Titulo</label>
-                                                    <input type="text" class="form-control" placeholder="Buscar Proceso" aria-label="Text input with segmented dropdown button">
-                                                </div>
-                                                <div class="col-12 col-sm-12 col-md-12 col-lg-12" style="padding-top: 5px;">
-                                                    <label for=""> Numero de Radicado</label>
-                                                    <div class="row">
-                                                        <div class="col-3 col-sm-3 col-md-3 col-lg-3">
-                                                            <select name="" id="" class="form-control">
-                                                                <option> Numero de Radicado</option>
-                                                                <option> NIT</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-2 col-sm-2 col-md-9 col-lg-9">
-                                                            <input type="text" name="radicado" id="radicado" class="form-control">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-12 col-12 col-md-11 col-lg-11" style="padding-top: 5px;">
-                                                    <label for=""> Juzgado</label>
-                                                    <input type="text" name="radicado" id="radicado" class="form-control">
-                                                </div>
-                                                <div class="input-group-append" style="padding-top: 30px;">
-                                                    <button class="btn btn-secondary btn-small" id="generator_link" type="button">
-                                                        <i class="icon-globe"></i>
-                                                    </button>
-                                                </div>
-                                                <div class="col-12 col-12 col-md-12 col-lg-12" style="padding-top: 5px;">
-                                                    <label for=""> Jurisdiccion</label>
-                                                    <input type="text" name="radicado" id="radicado" class="form-control">
-                                                </div>
-                                                <div class="col-12 col-12 col-md-12 col-lg-12" style="padding-top: 5px;">
-                                                    <label for=""> Materia</label>
-                                                    <input type="text" name="radicado" id="radicado" class="form-control">
-                                                </div>
-                                                <div class="col-12 col-12 col-md-12 col-lg-12" style="padding-top: 5px;">
-                                                    <label for=""> Detalle De Materia</label>
-                                                    <input type="text" name="radicado" id="radicado" class="form-control">
-                                                </div>
-                                                <div class="col-12 col-12 col-md-12 col-lg-12" style="padding-top: 5px;">
-                                                    <label for=""> Estado</label>
-                                                    <select name="estado" id="estado" class="form-control">
-                                                        <option></option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-12 col-12 col-md-12 col-lg-12" style="padding-top: 5px;">
-                                                    <label for=""> Ubicación Del Expediente</label>
-                                                    <input type="text" name="radicado" id="radicado" class="form-control">
-                                                </div>
-
-                                            </div>
-                                        </fieldset>
-                                        <br>
-                                        <h3>Datos Adicionales</h3>
-                                        <fieldset style="width: 100%;">
-                                            <div class="row clearfix">
-
-                                                <div class="col-4 col-sm-4 col-md-4 col-md-11 col-lg-11" style="padding-top: 10px;">
-                                                    <input type="checkbox" name="Cofidencial" id="Cofidencial">
-                                                    <label for=""> Cofidencial</label>
-                                                </div>
-                                                <div class="col-4 col-sm-4 col-md-4 col-md-11 col-lg-11" style="padding-top: 5px;">
-                                                    <label for="">Cliente</label>
-                                                    <select name="cliente" id="cliente" class="form-control">
-                                                        <option></option>
-                                                    </select>
-                                                </div>
-                                                <div class="input-group-append" style="padding-top: 35px;">
-                                                    <button class="btn btn-secondary btn-small" id="generator_link" type="button">
-                                                        <i class="fa fa-plus"></i>
-                                                    </button>
-                                                </div>
-                                                <div class="col-4 col-sm-4 col-md-4 col-md-11 col-lg-11" style="padding-top: 5px;">
-                                                    <label for="">Asunto</label>
-                                                    <select name="asunto" id="asunto" class="form-control">
-                                                        <option></option>
-                                                    </select>
-                                                </div>
-                                                <div class="input-group-append" style="padding-top: 35px;">
-                                                    <button class="btn btn-secondary btn-small" id="generator_link" type="button">
-                                                        <i class="fa fa-plus"></i>
-                                                    </button>
-                                                </div>
-                                                <div class="col-12 col-12 col-md-12 col-lg-12" style="padding-top: 5px;">
-                                                    <label for=""> Flujo de Trabajo</label>
-                                                    <select name="flujo_trabajo" id="flujo_trabajo" class="form-control">
-                                                        <option></option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-12 col-12 col-md-12 col-lg-12" style="padding-top: 5px;">
-                                                    <label for=""> Etapa</label>
-                                                    <select name="etapa" id="etapa" class="form-control">
-                                                        <option></option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-12 col-12 col-md-12 col-lg-12" style="padding-top: 10px;">
-                                                    <label for=""> Usuarios Involucrados</label>
-                                                    <a class="btn btn-success">
-                                                        <li class="fa fa-user"></li>
-                                                    </a>
-                                                    <a class="btn btn-primary">
-                                                        <li class="fa fa-plus"></li>&nbsp;Usuarios
-                                                    </a>
-
-                                                </div>
-                                            </div>
-                                        </fieldset>
-                                    </form>
-                                </div>
-                            </div>
+                    <div class="col-sm-12 col-md-4 col-lg-4">
+                        <div>
+                            <h4>Usuario Disponibles</h4>
                         </div>
+                        <select name="" id="">
+                            <option value="">1</option>
+                            <option value="">2</option>
+                            <option value="">3</option>
+                        </select>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            procesos: {},
+            keys: {},
+            data: {},
+            inicio: 0,
+            fin: 5,
+            cant_pag: 0,
+            index: 1,
+        },
+        mounted() {
+            this.getData()
+        },
+        methods: {
+            binding(data) {
+                this.data = data
+                this.procesos = data.slice(this.inicio, this.fin)
+                this.cant_pag = Math.ceil(data.length / this.fin);
+            },
+            siguiente() {
+                this.fin = this.fin + 6
+                this.inicio = this.inicio + 6
+                this.procesos = this.data.slice(this.inicio, this.fin)
+            },
+            anterior() {
+                this.fin = this.fin - 6
+                this.inicio = this.inicio - 6
+                this.procesos = this.data.slice(this.inicio, this.fin)
+            },
+            gopage(page) {
+                const itemsPerPage = 5;
+                this.inicio = (page - 1) * itemsPerPage;
+                this.fin = this.inicio + itemsPerPage;
+                this.procesos = this.data.slice(this.inicio, this.fin)
+            },
+
+            async getData() {
+
+                // let obligacion = document.getElementById('obligacion').value
+                // let estado = document.getElementById('estado').value
+                // let identificacion = document.getElementById('identificacion').value
+                // let fecha_limite_desde = document.getElementById('fecha_limite_desde').value
+                // let fecha_limite_hasta = document.getElementById('fecha_limite_hasta').value
+
+                let json = {
+                    'obligacion': '',
+                    'estado': '',
+                    'identificacion': '',
+                    'fecha_limite_desde': '',
+                    'fecha_limite_hasta': '',
+                }
+
+                const response = await fetch("/filtroProceso", {
+                    method: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(json),
+                });
+                const data = await response.json();
+                this.getKey(data);
+                console.log(data);
+                this.binding(data);
+            },
+            getKey(data) {
+
+                let llaves = [];
+                for (let index = 0; index < data.length; index++) {
+                    llaves = Object.keys(data[0]);
+                }
+                this.keys = llaves;
+
+            },
+            async verproceso(id) {
+                await fetch("/verProceso", {
+                    method: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(id),
+                });
+                const data = await response.json();
+
+            },
+
+        }
+    });
+</script>
+@endsection

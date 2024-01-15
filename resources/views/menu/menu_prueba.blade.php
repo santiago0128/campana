@@ -292,6 +292,7 @@
         border-radius: 50%;
         margin-bottom: 20px;
     }
+
     .circle_alert {
         width: 35px;
         height: 35px;
@@ -476,7 +477,7 @@
                             <a href="#" class="nav_link active">
                                 <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Inicio</span>
                             </a>
-                            <a type="button" id="btnprocesos" class="nav_link">
+                            <a type="button" href="{{url('/portafolio?procesos')}}" class="nav_link">
                                 <i class='bx bx-folder nav_icon'></i> <span class="nav_name">Procesos</span>
                             </a>
                             <a href="{{url('/gestion?calendario')}}" class="nav_link">
@@ -494,7 +495,7 @@
                         </div>
                 </div>
                 <div>
-                    <a class="nav_link" href="http://xion:8000/main?idUsuario=<?php echo session('idUsuario') ?>">
+                    <a class="nav_link" @click="salirCampana()">
                         <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">Salir</span>
                     </a>
                 </div>
@@ -510,20 +511,15 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>dsafasdf</th>
-                                    <th>dsafasdf</th>
-                                    <th>dsafasdf</th>
-                                    <th>dsafasdf</th>
-                                    <th>dsafasdf</th>
+                                    <th>Usuario</th>
+                                    <th>Cantidad Gestion</th>
+
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>asdfasdf</td>
-                                    <td>asdfasdf</td>
-                                    <td>asdfasdf</td>
-                                    <td>asdfasdf</td>
-                                    <td>asdfasdf</td>
+                                <tr v-for=" item in ranking">
+                                    <td>@{{item.login}}</td>
+                                    <td>@{{item.count}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -540,34 +536,26 @@
         el: '#menu',
         data: {
             data: {},
+            ranking: {},
         },
         mounted() {
             this.getData()
-
             const showNavbar = (toggleId, navId, bodyId, headerId) => {
                 const toggle = document.getElementById(toggleId),
                     nav = document.getElementById(navId),
                     bodypd = document.getElementById(bodyId),
                     headerpd = document.getElementById(headerId)
 
-                // Validate that all variables exist
                 if (toggle && nav && bodypd && headerpd) {
                     toggle.addEventListener('click', () => {
-                        // show_navbar navbar
                         nav.classList.toggle('show_navbar')
-                        // change icon
                         toggle.classList.toggle('bx-x')
-                        // add padding to body
                         bodypd.classList.toggle('body-pd')
-                        // add padding to header
                         headerpd.classList.toggle('body-pd')
                     })
                 }
             }
-
             showNavbar('header-toggle', 'nav-bar', 'body-pd', 'header')
-
-            /*===== LINK ACTIVE =====*/
             const linkColor = document.querySelectorAll('.nav_link')
 
             function colorLink() {
@@ -577,6 +565,9 @@
                 }
             }
             linkColor.forEach(l => l.addEventListener('click', colorLink))
+            setInterval(() => {
+                this.getRanking();
+            }, 10000);
         },
         methods: {
             binding(data) {
@@ -613,19 +604,17 @@
                 const toggleReport = document.querySelector(".report");
                 toggleReport.classList.toggle("active");
             },
-            async cerrar_campana() {
-
-                const response = await fetch("http://xion:8000/?id=" + <?php echo session('idUsuario') ?>, {
-                    method: 'GET',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                        'Content-Type': 'application/json', // Tipo de contenido de la solicitud
-                        'Authorization': 'Bearer tuTokenJWT'
-                    },
-                    mode: 'no-cors', // Cambiado a 'cors' para permitir el envío de encabezados personalizados y acceso al contenido de la respuesta
-                });
+            async getRanking() {
+                const response = await fetch("/getranking");
                 const data = await response.json();
-                // window.close()
+                this.ranking = data;
+            },
+            async salirCampana() {
+                const response = await fetch("/salirCampana");
+                const data = await response.json();
+                if (response.status == 200) {
+                    window.close()
+                }
             }
         }
     });

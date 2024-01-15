@@ -23,7 +23,8 @@ class Controller extends BaseController
     {
         if(isset($_GET['procesos'])){
             $shema_procesos = ModelProceso::proceso_table_schema();
-            return view('portafolio.procesos',['shema'=>$shema_procesos]);
+            return view('portafolio.procesos',['schema'=>$shema_procesos]);
+            
         }elseif(isset($_GET['movimientos'])){
             return view('portafolio.movimientos');
         }elseif(isset($_GET['novedades'])){

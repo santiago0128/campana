@@ -1,5 +1,6 @@
 @extends('inicio.index')
 @section('contenido')
+<div id="app">
     <div class="block-header">
         <div class="row container">
             <div class="col-lg-5 col-md-8 col-sm-12">
@@ -116,5 +117,54 @@
             </div>
         </div>
     </div>
-<!-- </div> -->
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+<!-- Tu código de Vue.js -->
+<script>
+    // var app = new Vue({
+    //     el: '#procesos',
+    //     data: {
+    //         data: {},
+    //     },
+    //     mounted() {
+    //         this.getData()
+    //     },
+    //     methods: {
+    //         binding(data) {
+    //             this.data = data
+    //             this.procesos = data.slice(this.inicio, this.fin)
+    //             this.cant_pag = Math.ceil(data.length / this.fin);
+    //         },
+    //         async getData() {
+
+    //             let obligacion = document.getElementById('obligacion').value
+    //             let estado = document.getElementById('estado').value
+    //             let identificacion = document.getElementById('identificacion').value
+    //             let fecha_limite_desde = document.getElementById('fecha_limite_desde').value
+    //             let fecha_limite_hasta = document.getElementById('fecha_limite_hasta').value
+
+    //             let json = {
+    //                 'obligacion': obligacion,
+    //                 'estado': estado,
+    //                 'identificacion': identificacion,
+    //                 'fecha_limite_desde': fecha_limite_desde,
+    //                 'fecha_limite_hasta': fecha_limite_hasta,
+    //             }
+
+    //             const response = await fetch("/filtroProceso", {
+    //                 method: "POST",
+    //                 headers: {
+    //                     'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+    //                     "Content-Type": "application/json",
+    //                 },
+    //                 body: JSON.stringify(json),
+    //             });
+    //             const data = await response.json();
+    //             this.getKey(data);
+    //             this.binding(data);
+    //         },
+
+    //     }
+    // });
+</script>
 @endsection

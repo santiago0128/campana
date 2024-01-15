@@ -19,6 +19,7 @@ use App\Http\Controllers\Controlleradministraciongestion;
 */
 Route::get('/', [Controller::class, 'index']);
 
+Route::get('/procesos', [Controller::class, 'procesos']);
 Route::get('/administracion', [Controller::class, 'administracion']);
 Route::get('/portafolio', [Controller::class, 'portafolio']);
 Route::get('/gestion', [Controller::class, 'gestion']);
@@ -40,11 +41,8 @@ Route::get('/verProceso', [Controllerprocesos::class, 'buscarProcesoId']);
 Route::POST('/getdataproceso', [Controllerprocesos::class, 'getdataproceso']);
 
 
-
 Route::POST('/activarcontacto', [Controllerprocesos::class, 'activarcontacto']);
 Route::POST('/activarperfil', [Controllerprocesos::class, 'activarperfil']);
-
-
 
 
 Route::post('/saveGestion', [Controllergestion::class, 'saveGestion']);
@@ -96,3 +94,5 @@ Route::post('/insertarperfil', [Controlleradministraciongestion::class, 'inserta
 Route::post('/eliminar_perfil', [Controlleradministraciongestion::class, 'eliminar_perfil']);
 
 route::get('/getagenda', [Controllergestion::class, 'getAgenda']);
+route::get('/getranking', [Controllergestion::class, 'getranking']);
+route::get('/salirCampana', [Controllergestion::class, 'salirCampana']);

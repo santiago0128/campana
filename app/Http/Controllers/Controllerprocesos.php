@@ -149,10 +149,17 @@ class Controllerprocesos extends Controller
         $identificacion = request()['identificacion'];
         $obligacion = request()['obligacion'];
         $obligaciones = ModelGestion::getobligacion($identificacion, $obligacion);
-        if($obligaciones[0]->estado == 'Pendiente'){
-            ModelProceso::updateAbrirObligacion($identificacion, $obligacion);
+        if($obligaciones){
+            if($obligaciones[0]->estado == 'Pendiente'){
+                ModelProceso::updateAbrirObligacion($identificacion, $obligacion);
+            }
+            return view('gestion.gestion_procesos');
+        }else{
+            echo '<script>
+            alert("No se puede abrir el proceso, por favor contactese con la persona encargada")
+            </script>';
+            return view('gestion.calendario');
         }
-        return view('gestion.gestion_procesos');
     }
 
     public function getdataproceso()
