@@ -53,11 +53,14 @@ class ModelProceso extends Model
         $report = DB::connection('pgsql')->select($sql);
         return $report;
     }
-    public static function getProcesosfiltro($obligacion, $identificacion, $fecha_desde, $fecha_hasta, $estado)
+    public static function getProcesosfiltro($obligacion, $identificacion, $fecha_desde, $fecha_hasta, $estado, $usuario)
     {
         $fecha_hoy = date('Y-m-d');
-        $sql = "SELECT * from sys.procesos p inner join sys.obligaciones o on o.obligacion = p.obligacion and  o.identificacion = p.identificacion  where true";
+        $sql = "SELECT * from sys.procesos p inner join sys.obligaciones o on o.obligacion = p.obligacion and  o.identificacion = p.identificacion  where true ";
 
+        if (!empty($usuario)) {
+            $sql .= " AND o.usuario = '$usuario' ";
+        }
         if (!empty($obligacion)) {
             $sql .= " AND p.obligacion = '$obligacion' ";
         }

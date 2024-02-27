@@ -567,7 +567,7 @@
             linkColor.forEach(l => l.addEventListener('click', colorLink))
             setInterval(() => {
                 this.getRanking();
-            }, 50000);
+            }, 10000);
         },
         methods: {
             binding(data) {

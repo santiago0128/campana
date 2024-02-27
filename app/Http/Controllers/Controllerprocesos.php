@@ -127,7 +127,8 @@ class Controllerprocesos extends Controller
         $fecha_desde = request()['fecha_limite_desde'];
         $fecha_hasta = request()['fecha_limite_hasta'];
         $estado = request()['estado'];
-        $procesos = ModelProceso::getProcesosfiltro($obligacion, $identificacion, $fecha_desde, $fecha_hasta, $estado);
+        $usuario = request()['usuario'];
+        $procesos = ModelProceso::getProcesosfiltro($obligacion, $identificacion, $fecha_desde, $fecha_hasta, $estado, $usuario);
         $usuarios = ModelUsuario::getUsuarios();
 
         foreach ($procesos as $key) {

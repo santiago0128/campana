@@ -231,6 +231,7 @@
                     'identificacion': '',
                     'fecha_limite_desde': '',
                     'fecha_limite_hasta': '',
+                    'usuario': '',
                 }
 
                 const response = await fetch("/filtroProceso", {

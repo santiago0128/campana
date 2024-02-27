@@ -1,5 +1,10 @@
 @extends('inicio.index')
 @section('contenido')
+<?php 
+use App\Models\ModelUsuario;
+$usuario = ModelUsuario::getUsuariosId(session('idUsuario'));
+$usuario_email = $usuario[0]->email;
+?>
 <div id="procesos">
     <div class="block-header">
         <div class="row">
@@ -96,7 +101,7 @@
                         <tbody class="text-center">
                             <template v-for="item in procesos">
                                 <tr>
-                                    <template v-for="item2 in keys">
+                                    <template v-for="item2 in keys" v-if="">
                                         <td>@{{item[item2]}}</td>
                                     </template>
                                     <td><a :href="'/verProceso?id=' + item.id + '&identificacion=' + item.identificacion +'&obligacion='+ item.obligacion" class="btn btn-primary">Ver</a></td>
@@ -133,6 +138,9 @@
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
 <!-- Tu código de Vue.js -->
 <script>
+    var idUsuario = <?php echo json_encode($usuario_email) ?>
+
+
     var app = new Vue({
         el: '#procesos',
         data: {
@@ -182,6 +190,7 @@
                 let identificacion = document.getElementById('identificacion').value
                 let fecha_limite_desde = document.getElementById('fecha_limite_desde').value
                 let fecha_limite_hasta = document.getElementById('fecha_limite_hasta').value
+                let usuario_session = idUsuario;
 
                 let json = {
                     'obligacion': obligacion,
@@ -189,6 +198,7 @@
                     'identificacion': identificacion,
                     'fecha_limite_desde': fecha_limite_desde,
                     'fecha_limite_hasta': fecha_limite_hasta,
+                    'usuario': usuario_session,
                 }
 
                 const response = await fetch("/filtroProceso", {

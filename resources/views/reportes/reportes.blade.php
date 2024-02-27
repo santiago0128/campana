@@ -100,6 +100,11 @@
             },
             async mountedReport(nombre_reporte) {
 
+                if(this.fecha_inicio == '' || this.fecha_inicio == ''){
+                    alert('Los Campos de Fechas con obligatorios')
+                }
+
+
                 json = {
                     'fecha_inicio': this.fecha_inicio,
                     'fecha_fin': this.fecha_fin,
