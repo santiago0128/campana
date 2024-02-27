@@ -14,7 +14,6 @@ class Controller extends BaseController
 
     public function index(){
         session(['idUsuario' => $_GET['idUsuario']]);
-
         $usuario = ModelUsuario::getUsuariosId(session('idUsuario'));
         return view('inicio')->with('usuario', $usuario);
     }
@@ -29,8 +28,6 @@ class Controller extends BaseController
             return view('portafolio.movimientos');
         }elseif(isset($_GET['novedades'])){
             return view('portafolio.novedades');
-        }elseif(isset($_GET['reportes'])){
-            return view('portafolio.reportes');
         }
     }
     public function gestion()
@@ -55,6 +52,12 @@ class Controller extends BaseController
             return view('administracion.cliente', ['cliente'=>$cliente],['cantidad'=>$cantidad]);
         }elseif(isset($_GET['gestion'])){
             return view('administracion.administrar_datos');
+        }
+    }
+
+    public function reportes(){
+        if(isset($_GET['reportes'])){
+            return view('reportes.reportes');
         }
     }
 

@@ -474,7 +474,7 @@
                 <div>
                     <a href="{{ url('/') }}" class="nav_logo"><img style="width: 120px; " src="{{ asset('img/xion.png')}}" alt="Mplify Logo" class="img-responsive logo">
                         <div class="nav_list">
-                            <a href="#" class="nav_link active">
+                            <a href="{{ url('/?idUsuario='.session('idUsuario'))}}" class="nav_link active">
                                 <i class='bx bx-grid-alt nav_icon'></i><span class="nav_name">Inicio</span>
                             </a>
                             <a type="button" href="{{url('/portafolio?procesos')}}" class="nav_link">
@@ -489,7 +489,7 @@
                             <a href="{{url('/administracion?gestion')}}" class="nav_link">
                                 <i class='bx bx-bookmark nav_icon'></i> <span class="nav_name">Administracion</span>
                             </a>
-                            <a href="#" class="nav_link">
+                            <a href="{{url('/reportes?reportes')}}" class="nav_link">
                                 <i class='bx bx-bar-chart-alt-2 nav_icon'></i><span class="nav_name">Reportes</span>
                             </a>
                         </div>
@@ -567,7 +567,7 @@
             linkColor.forEach(l => l.addEventListener('click', colorLink))
             setInterval(() => {
                 this.getRanking();
-            }, 10000);
+            }, 50000);
         },
         methods: {
             binding(data) {

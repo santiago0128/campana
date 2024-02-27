@@ -7,6 +7,8 @@ use App\Http\Controllers\Controllerprocesos;
 use App\Http\Controllers\Controllergestion;
 use App\Http\Controllers\Controllerclientes;
 use App\Http\Controllers\Controlleradministraciongestion;
+use App\Http\Controllers\ControllerReporte;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,6 +26,7 @@ Route::get('/administracion', [Controller::class, 'administracion']);
 Route::get('/portafolio', [Controller::class, 'portafolio']);
 Route::get('/gestion', [Controller::class, 'gestion']);
 Route::get('/inicio', [Controller::class, 'inicio']);
+Route::get('/reportes', [Controller::class, 'reportes']);
 
 Route::post('/save', [Controllerusuarios::class, 'insertarUsuarios']);
 Route::post('/getDataUsuarios', [Controllerusuarios::class, 'getUsuarioSession']);
@@ -96,3 +99,13 @@ Route::post('/eliminar_perfil', [Controlleradministraciongestion::class, 'elimin
 route::get('/getagenda', [Controllergestion::class, 'getAgenda']);
 route::get('/getranking', [Controllergestion::class, 'getranking']);
 route::get('/salirCampana', [Controllergestion::class, 'salirCampana']);
+
+
+route::post('/getCamposFiltro', [Controllerprocesos::class, 'getCamposFiltro']);
+route::post('/aplicarFiltro', [Controllerprocesos::class, 'aplicarFiltro']);
+route::get('/getDataIndex', [Controllerprocesos::class, 'getDataIndex']);
+route::post('/agregarUsuariosProcesos', [Controllerprocesos::class, 'agregarUsuariosProcesos']);
+
+
+route::get('/getReportes',[ControllerReporte::class, 'getReportes']);
+route::post('/mountedReport',[ControllerReporte::class, 'mountedReport']);

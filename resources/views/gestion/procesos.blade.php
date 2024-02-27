@@ -40,8 +40,9 @@
                                 <label for="">Estado</label>
                                 <select name="estado" id="estado" class="form-control">
                                     <option value="0">Ninguno</option>
-                                    <option value="1">Activo</option>
-                                    <option value="2">Inactivo</option>
+                                    <option value="Pendiente">Pendiente</option>
+                                    <option value="Abierto">Abiertos</option>
+                                    <option value="Cerrado">Cerrados</option>
                                 </select>
                             </div>
                             &nbsp;
@@ -87,6 +88,8 @@
                                 @foreach ($schema as $schema)
                                 <th style="text-align: center;">{{$schema->nombre}}</th>
                                 @endforeach
+                                <th style="text-align: center;">Estado</th>
+                                <th style="text-align: center;">Usuario Asignado</th>
                                 <th style="text-align: center;">Accion</th>
                             </tr>
                         </thead>
@@ -109,8 +112,10 @@
                                     <span class="sr-only">Previous</span>
                                 </a>
                             </li>
-                            <template v-for="cantidad in cant_pag">
-                                <li class="page-item"><a class="page-link" @click="gopage(cantidad)">@{{cantidad}}</a></li>
+                            <template v-for="(cantidad, index) in cant_pag">
+                                <li :class="{ 'page-item active': cantidad == pagina_actual }">
+                                    <a class="page-link" @click="gopage(cantidad)">@{{index + 1}}</a>
+                                </li>
                             </template>
                             <li class="page-item">
                                 <a class="page-link" @click="siguiente()" aria-label="Next">
@@ -135,7 +140,8 @@
             keys: {},
             data: {},
             inicio: 0,
-            fin: 5,
+            fin: 10,
+            pagina_actual: 1,
             cant_pag: 0,
             index: 1,
         },
@@ -144,28 +150,31 @@
         },
         methods: {
             binding(data) {
-                this.data = data
-                this.procesos = data.slice(this.inicio, this.fin)
-                this.cant_pag = Math.ceil(data.length / this.fin);
+                this.data = data.procesos
+                this.procesos = data.procesos.slice(this.inicio, this.fin)
+                this.cant_pag = Math.ceil(data.procesos.length / this.fin);
             },
             siguiente() {
-                this.fin = this.fin + 6
-                this.inicio = this.inicio + 6
+                this.pagina_actual = this.pagina_actual + 1
+                this.fin = this.fin + 10
+                this.inicio = this.inicio + 10
                 this.procesos = this.data.slice(this.inicio, this.fin)
             },
             anterior() {
-                this.fin = this.fin - 6
-                this.inicio = this.inicio - 6
+                this.pagina_actual = this.pagina_actual - 1
+                this.fin = this.fin - 10
+                this.inicio = this.inicio - 10
                 console.log(this.inicio, this.fin);
                 this.procesos = this.data.slice(this.inicio, this.fin)
             },
             gopage(page) {
-                const itemsPerPage = 5; 
+                const itemsPerPage = 10;
+                this.pagina_actual = page
                 this.inicio = (page - 1) * itemsPerPage;
                 this.fin = this.inicio + itemsPerPage;
                 this.procesos = this.data.slice(this.inicio, this.fin)
             },
-           
+
             async getData() {
 
                 let obligacion = document.getElementById('obligacion').value
@@ -191,7 +200,7 @@
                     body: JSON.stringify(json),
                 });
                 const data = await response.json();
-                this.getKey(data);
+                this.getKey(data.procesos);
                 this.binding(data);
             },
             getKey(data) {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ModelGestion;
 use App\Models\ModelProceso;
+use App\Models\ModelUsuario;
 use App\Models\ModelClientes;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Client\Request;
@@ -36,7 +37,7 @@ class Controllerprocesos extends Controller
         for ($i = 1; $i < count($linea_de_texto); $i++) {
             $data[] = $linea_de_texto[$i];
         }
-        
+
 
         $table = '<div class="">';
         $table .= '<form method="POST" id="formUploadFile">';
@@ -72,7 +73,6 @@ class Controllerprocesos extends Controller
         fclose($file_handle);
         die(print($table));
     }
-
     public function uploadfile()
     {
 
@@ -104,9 +104,6 @@ class Controllerprocesos extends Controller
         }
         return $esquema;
     }
-
-
-
     public function buscarReporteProcesos()
     {
 
@@ -131,17 +128,16 @@ class Controllerprocesos extends Controller
         $fecha_hasta = request()['fecha_limite_hasta'];
         $estado = request()['estado'];
         $procesos = ModelProceso::getProcesosfiltro($obligacion, $identificacion, $fecha_desde, $fecha_hasta, $estado);
+        $usuarios = ModelUsuario::getUsuarios();
 
         foreach ($procesos as $key) {
             $report = json_encode($key);
             $array[] = json_decode($report, true);
         }
-
-        if (!empty($array)) {
-            return $array;
-        } else {
-            return false;
-        }
+        return response()->json([
+            'procesos' => $array,
+            'usuario' => $usuarios
+        ]);
     }
 
     public function buscarProcesoId()
@@ -149,12 +145,12 @@ class Controllerprocesos extends Controller
         $identificacion = request()['identificacion'];
         $obligacion = request()['obligacion'];
         $obligaciones = ModelGestion::getobligacion($identificacion, $obligacion);
-        if($obligaciones){
-            if($obligaciones[0]->estado == 'Pendiente'){
+        if ($obligaciones) {
+            if ($obligaciones[0]->estado == 'Pendiente') {
                 ModelProceso::updateAbrirObligacion($identificacion, $obligacion);
             }
             return view('gestion.gestion_procesos');
-        }else{
+        } else {
             echo '<script>
             alert("No se puede abrir el proceso, por favor contactese con la persona encargada")
             </script>';
@@ -171,7 +167,6 @@ class Controllerprocesos extends Controller
         $obligaciones = ModelGestion::getobligacion($identificacion, $procesos[0]->obligacion);
         $accion = ModelGestion::getAccion();
         $mtvonopago = ModelGestion::getMtvonoPago();
-        $actividad = ModelGestion::getActividadEconomica();
         $tipocontacto = ModelGestion::getTipoContacto();
         $etapa = ModelGestion::getEtapa();
         $modulo_gestion = ModelGestion::modulos_gestion();
@@ -181,7 +176,6 @@ class Controllerprocesos extends Controller
             'procesos' => $procesos,
             'historico' => $historico,
             'accion' => $accion,
-            'actividad' => $actividad,
             'tipocontacto' => $tipocontacto,
             'etapa' => $etapa,
             'modulo_gestion' => $modulo_gestion,
@@ -208,5 +202,74 @@ class Controllerprocesos extends Controller
         return response()->json([
             'perfil' => $perfil,
         ]);
+    }
+    public function getCamposFiltro()
+    {
+        $data = request()->post();
+
+        for ($i = 0; $i < count($data); $i++) {
+            $campos[] = ModelProceso::getCamposFiltro($data[$i]);
+        }
+
+        return response()->json([
+            'campo' => $campos,
+        ]);
+    }
+
+    public function getDataIndex()
+    {
+        $usuarios = ModelUsuario::getUsuarios();
+        $usuario_session = ModelUsuario::getUsuariosId(session('idUsuario'));
+        $obligaciones = ModelProceso::getObligaciones();
+        $cantidad_procesos = ModelProceso::getProcesosCantidad();
+
+        return response()->json([
+            'usuarios' => $usuarios,
+            'usuario_session' => $usuario_session,
+            'obligaciones' => $obligaciones,
+            'cantidad_procesos' => $cantidad_procesos,
+        ]);
+    }
+
+    public function aplicarFiltro()
+    {
+        $data = request()->post();
+        $whereClauses = [];
+        for ($i = 0; $i < count($data); $i++) {
+            $campo = $data[$i]['tabla'];
+            $valor = $data[$i]['value'];
+            $whereClauses[] = "$campo = '$valor'";
+        }
+        $whereString = implode(' AND ', $whereClauses);
+        $procesos = ModelProceso::getProcesosFiltrado($whereString);
+        return response()->json([
+            'procesos' => $procesos,
+        ]);
+    }
+    public static function agregarUsuariosProcesos()
+    {
+        $data = request()->post();
+        $usuarios = $data['usuario'];
+        $casos = $data['procesos'];
+        $casosPorUsuario = floor(count($casos) / count($usuarios));
+        shuffle($casos);
+        $asignacion = [];
+        foreach ($usuarios as $usuario) {
+            $asignacion[$usuario] = array_splice($casos, 0, $casosPorUsuario);
+        }
+        $i = 0;
+        while (!empty($casos)) {
+            $usuario = $usuarios[$i % count($usuarios)];
+            $asignacion[$usuario][] = array_pop($casos);
+            $i++;
+        }
+        for ($i = 0; $i < count($usuarios); $i++) {
+            for ($j = 0; $j < count($asignacion[$usuarios[$i]]); $j++) {
+                $usuario_key = array_keys($asignacion);
+                $usuario = $usuario_key[$i];
+                $casos = $asignacion[$usuarios[$i]][$j];
+                ModelProceso::agregarUsuarioProcesos($usuario, $casos['identificacion'], $casos['obligacion']);
+            }
+        }
     }
 }

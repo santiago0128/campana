@@ -40,16 +40,9 @@ class ModelGestion extends Model
         $data = DB::connection('pgsql')->select($sql);
         return $data;
     }
-
     public static function getMtvonoPago()
     {
         $sql = "SELECT * FROM sys.motivonopago";
-        $data = DB::connection('pgsql')->select($sql);
-        return $data;
-    }
-    public static function getActividadEconomica()
-    {
-        $sql = "SELECT * FROM sys.actividadeconomica";
         $data = DB::connection('pgsql')->select($sql);
         return $data;
     }
@@ -67,7 +60,6 @@ class ModelGestion extends Model
         $data = DB::connection('pgsql')->select($sql);
         return $data;
     }
-
     public static function getEtapaAdmin()
     {
         $sql = "SELECT * FROM sys.etapa  order by id";
@@ -198,7 +190,7 @@ class ModelGestion extends Model
     public static function getHistorico($identificacion)
     {
         $sql = "SELECT h.fechagestion,h.gestion,h.login,h.tiempogestion,
-        (select pg.nombre from sys.perfilgestion pg where h.idperfil = pg.id) as perfil,
+        (select pg.nombre from sys.perfil_gestion pg where h.idperfil = pg.id) as perfil,
         (select c.nombre from sys.contacto c where h.idcontacto = c.id) as contacto,
         (select e.nombre from sys.etapa e where h.etapa = e.id) as etapa,
         (select a.nombre from sys.acciongestion a  where h.idaccion = a.id) as accion

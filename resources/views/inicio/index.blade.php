@@ -4,7 +4,9 @@
 @include('menu/header')
 @include('menu/menu_prueba')
 <div id="demo">
-    @yield('contenido')
+    <div style="padding-top: 20px ;">
+        @yield('contenido')
+    </div>
 </div>
 @include('menu/footer')
 

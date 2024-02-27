@@ -16,7 +16,6 @@ class Controlleradministraciongestion extends Controller
         $accion_admin = ModelGestion::getAccion_admin();
         $accion = ModelGestion::getAccion();
         $mtvonopago = ModelGestion::getMtvonoPago();
-        $actividad = ModelGestion::getActividadEconomica();
         $contacto = ModelGestion::getTipoContacto();
         $etapa = ModelGestion::getEtapaAdmin();
         $modulos = ModelGestion::modulos_gestion();
@@ -29,7 +28,6 @@ class Controlleradministraciongestion extends Controller
             'accion_admin' => $accion_admin,
             'accion' => $accion,
             'mtvonopago' => $mtvonopago,
-            'actividad' => $actividad,
             'contacto' => $contacto,
             'etapa' => $etapa,
             'modulos' => $modulos,
