@@ -30,7 +30,8 @@
             <div v-if="modulos_activos.includes('Etapas')" class="body">
                 <div id="etapa_proceso">
                     <div class="progress">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated " role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: <?php //echo $progreso ?>"></div>
+                        <div class="progress-bar progress-bar-striped progress-bar-animated " role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: <?php //echo $progreso 
+                                                                                                                                                                                        ?>"></div>
                     </div>
                 </div>
                 <div>
@@ -403,6 +404,9 @@
 
             },
             async guardarGestion() {
+
+                document.getElementById('btnGuardarGestion').disabled = true;
+
                 hora = document.getElementById('horas').value
                 minuto = document.getElementById('minutos').value
                 segundos = document.getElementById('segundos').value
@@ -433,13 +437,15 @@
                 });
 
                 $('#formGestion .form-control:visible:not(.noFilt)').each(function() {
-                    if ($(this).val() == '') {
-                        $(this).removeClass('is-valid');
-                        $(this).addClass('is-invalid');
-                        a++;
-                    } else {
-                        $(this).removeClass('is-invalid');
-                        $(this).addClass('is-valid');
+                    if ($(this).attr('id') !== 'prueba') {
+                        if ($(this).val() == '') {
+                            $(this).removeClass('is-valid');
+                            $(this).addClass('is-invalid');
+
+                        } else {
+                            $(this).removeClass('is-invalid');
+                            $(this).addClass('is-valid');
+                        }
                     }
                 });
                 this.getData();

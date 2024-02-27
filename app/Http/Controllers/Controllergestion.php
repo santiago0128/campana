@@ -32,7 +32,6 @@ class Controllergestion extends Controller
         $login = $usuarioid[0]->email;
         
         ModelProceso::updateCerrarObligacion($identificacion, $obligacion);
-
         $fecha_agendado = !empty($fecha_agendado) ? $fecha_agendado : NULL;
 
         if (!empty($fecha_agendado)) {
@@ -40,12 +39,11 @@ class Controllergestion extends Controller
         }
 
 
-        $hora = $hora < 10 ? '0' . $hora : $hora;
-        $minuto = $minuto < 10 ? '0' . $minuto : $minuto;
-        $segundos = $segundos < 10 ? '0' . $segundos : $segundos;
+        $hora = intval($hora) < 10 ? '0' . intval($hora) : intval($hora);
+        $minuto = intval($minuto) < 10 ? '0' . intval($minuto) : intval($minuto);
+        $segundos = intval($segundos) < 10 ? '0' . intval($segundos) : intval($segundos);
 
         $tiempo_gestion = "$hora : $minuto : $segundos";
-
         try {
             $gestion2 = ModelGestion::InsertarGestion($gestion, $tiempo_gestion, $perfil, $contacto, $accion, $id, $ip, $identificacion, $fecha_agendado, $login, $obligacion);
             return $gestion2;

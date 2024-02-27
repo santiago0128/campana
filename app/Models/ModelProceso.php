@@ -42,7 +42,7 @@ class ModelProceso extends Model
     public static function updateCerrarObligacion($identificacion, $obligacion)
     {
 
-        $sql = ("UPDATE sys.obligaciones SET  estado='Cerrado' where obligacion='$obligacion' and identificacion = $identificacion");
+        $sql = ("UPDATE sys.obligaciones SET  estado='Cerrado' where obligacion='$obligacion' and identificacion = '$identificacion'");
         $report = DB::connection('pgsql')->select($sql);
         return $report;
     }
