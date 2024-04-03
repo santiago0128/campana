@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\ModelGestion;
 use App\Models\ModelProceso;
 use App\Models\ModelUsuario;
+use Illuminate\Http\Request;
 use App\Models\ModelClientes;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Artisan;
 
@@ -163,6 +163,8 @@ class Controllerprocesos extends Controller
     {
         $id = request()['id'];
         $identificacion = request()['identificacion'];
+        $obligacion = request()['obligacion'];
+
         $procesos = ModelProceso::getProcesosIdentificacion($id);
         $historico = ModelGestion::getHistorico($identificacion);
         $obligaciones = ModelGestion::getobligacion($identificacion, $procesos[0]->obligacion);
@@ -172,6 +174,7 @@ class Controllerprocesos extends Controller
         $etapa = ModelGestion::getEtapa();
         $modulo_gestion = ModelGestion::modulos_gestion();
         $perfil = ModelGestion::perfil_gestion();
+        $archivos = ModelGestion::getArchivosCargados($identificacion, $obligacion);
 
         return response()->json([
             'procesos' => $procesos,
@@ -182,7 +185,8 @@ class Controllerprocesos extends Controller
             'modulo_gestion' => $modulo_gestion,
             'mtvonopago' => $mtvonopago,
             'perfil' => $perfil,
-            'obligaciones' => $obligaciones,
+            'obligaciones' => $obligaciones[0],
+            'archivos' => $archivos,
         ]);
     }
 
@@ -271,6 +275,36 @@ class Controllerprocesos extends Controller
                 $casos = $asignacion[$usuarios[$i]][$j];
                 ModelProceso::agregarUsuarioProcesos($usuario, $casos['identificacion'], $casos['obligacion']);
             }
+        }
+    }
+    public static function uploadFileGestion()
+    {
+        $dir = "$_SERVER[DOCUMENT_ROOT]/filesGestion/" . request()->identificacion . "-" . request()->obligacion . "/";
+        if (!file_exists($dir)) {
+            mkdir($dir, 0777, true);
+        }
+        $originalName = request()->file('fileInput')->getClientOriginalName();
+        $filePath = $dir . $originalName;
+        try {
+
+            move_uploaded_file(request()['fileInput'], $filePath);
+
+            $data = ModelGestion::getArchivosCargadosIdentificacion($originalName, request()->identificacion, request()->obligacion, $originalName, date('Y-m-d-h-m-s'));
+            if(!$data){
+                ModelGestion::insertRegistroArchivo(request()->identificacion, request()->obligacion, $originalName, date('Y-m-d H:m:s'));
+            }else{
+                ModelGestion::updateRegistroArchivo(request()->identificacion, request()->obligacion, $originalName, date('Y-m-d H:m:s'));
+            }
+
+            return response()->json([
+                'status' => 200,
+                'msg' => 'El archivo se cargo de manera correcta'
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 500,
+                'msg' => 'Algo salio mal! Contacta con Soporte'
+            ]);
         }
     }
 }

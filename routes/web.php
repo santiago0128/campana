@@ -1,13 +1,14 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Controllerusuarios;
-use App\Http\Controllers\Controllerprocesos;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controllergestion;
-use App\Http\Controllers\Controllerclientes;
-use App\Http\Controllers\Controlleradministraciongestion;
+use App\Http\Controllers\ControllerLlamada;
 use App\Http\Controllers\ControllerReporte;
+use App\Http\Controllers\Controllerclientes;
+use App\Http\Controllers\Controllerprocesos;
+use App\Http\Controllers\Controllerusuarios;
+use App\Http\Controllers\Controlleradministraciongestion;
 
 /*
 |--------------------------------------------------------------------------
@@ -109,3 +110,9 @@ route::post('/agregarUsuariosProcesos', [Controllerprocesos::class, 'agregarUsua
 
 route::get('/getReportes',[ControllerReporte::class, 'getReportes']);
 route::post('/mountedReport',[ControllerReporte::class, 'mountedReport']);
+
+
+route::get('/llamada',[ControllerLlamada::class, 'Llamada']);
+route::post('/uploadFileGestion',[Controllerprocesos::class, 'uploadFileGestion']);
+
+

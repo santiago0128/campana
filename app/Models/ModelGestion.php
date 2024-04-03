@@ -219,4 +219,31 @@ class ModelGestion extends Model
         return $data;
     }
 
+    public static function insertRegistroArchivo($identificacion, $obligacion, $nombre_archivo, $fecha_cargue){
+
+        $id_usuario = session('idUsuario');
+        $sql = "INSERT INTO sys.archivos_gestion (nombre_archivo, fecha_agenda, usuario_cargue, identificacion, obligacion) Values ('$nombre_archivo', '$fecha_cargue', '$id_usuario','$identificacion', '$obligacion')";
+        $data = DB::connection('pgsql')->select($sql);
+        return 1;
+    }
+
+    public static function updateRegistroArchivo($identificacion, $obligacion, $nombre_archivo, $fecha_cargue){
+
+        $id_usuario = session('idUsuario');
+        $sql = "UPDATE sys.archivos_gestion set fecha_agenda='$fecha_cargue', usuario_cargue='$id_usuario' WHERE nombre_archivo='$nombre_archivo' and identificacion = '$identificacion' and obligacion = '$obligacion'";
+        DB::connection('pgsql')->select($sql);
+        return 1;
+    }
+
+    public static function getArchivosCargadosIdentificacion($nombre, $identificacion, $obligacion){
+        $sql = "SELECT * FROM sys.archivos_gestion where identificacion = '$identificacion' and obligacion = '$obligacion' and nombre_archivo = '$nombre'";
+        $data = DB::connection('pgsql')->select($sql);
+        return $data;
+    }
+    public static function getArchivosCargados($identificacion, $obligacion){
+        $sql = "SELECT * FROM sys.archivos_gestion where identificacion = '$identificacion' and obligacion = '$obligacion'";
+        $data = DB::connection('pgsql')->select($sql);
+        return $data;
+    }
+
 }

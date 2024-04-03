@@ -20,10 +20,10 @@
     </div>
     <div class="col-12">
         <div class="card">
-            <div class="header" :style="{ 'border': (obligaciones[0].estado === 'Cerrado') ? '3px solid red' : '3px solid green' }">
+            <div class="header" :style="{ 'border': (obligaciones.estado === 'Cerrado') ? '3px solid red' : '3px solid green' }">
                 <div class="row">
                     <h4>
-                        <li class="fa fa-bars"></li>&nbsp;Estado Proceso: @{{obligaciones[0].estado}}
+                        <li class="fa fa-bars"></li>&nbsp;Estado Proceso: @{{obligaciones.estado}}
                     </h4>
                 </div>
             </div>
@@ -80,6 +80,9 @@
                                 <input type="text" name="segundos" id="segundos" class="form-control noFilt" readonly value="00" style="width: 10%; display: inline-block;">&nbsp;&nbsp;
                                 <template v-if="modulos_activos.includes('Email')">
                                     <a class="btn btn-success text-white" data-toggle="modal" data-target="#modalemail"><i class="fas fa-scroll"></i>&nbsp; Enviar Email</a>
+                                </template>
+                                <template v-if="modulos_activos.includes('Archivos')">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Archivos</button>
                                 </template>
                             </div>
                         </div>
@@ -151,7 +154,6 @@
             </div>
             <div class="body">
                 <div id="historico" role="tabpanel" aria-labelledby="historico-tab">
-                    <!-- <div class="col-12"> -->
                     <div class="table-responsive">
                         <table class="table table-hover table-bordered table-sm js-basic-example dataTable" id="table-historico" style="font-size: 10px; width: 100%">
                             <thead class="thead-info">
@@ -183,7 +185,6 @@
                         </table>
                     </div>
                 </div>
-                <!-- </div> -->
             </div>
         </div>
         <div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -212,6 +213,53 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
+
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="card">
+                                        <div class="body">
+                                            <form>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" placeholder="To">
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" placeholder="Subject">
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" placeholder="CC">
+                                                </div>
+                                            </form>
+                                            <hr>
+                                            <textarea name="content" id="textarea_id">
+
+                                     </textarea>
+                                            <div class="m-t-30">
+                                                <button type="button" class="btn btn-success">Send Message</button>
+                                                <button type="button" class="btn btn-secondary">Cargar Archivos</button>
+                                                <a href="app-inbox.html" class="btn btn-outline-secondary">Cancel</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade bd-example-modal-lg" id="modalarchivo" tabindex="-1" role="dialog" aria-labelledby="modalemail" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Envio Email</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-lg-12">
@@ -249,16 +297,60 @@
                 </div>
             </div>
         </div>
+
+    </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Archivos</h5>
+                    <button type="button" style="border-color: #fff;" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" style="color: #000;">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <h4>Cargar Archivo</h3>
+                            <div class="row">
+                                <div class="col-6">
+                                    <form method="POST" id="formUploadCsv" enctype="multipart/form-data">
+                                        <input type="file" name="fileInput" id="fileInput">
+                                        <input type="hidden" name="obligacion" v-model="obligacion">
+                                        <input type="hidden" name="identificacion" v-model="identificacion">
+                                    </form>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" @click="cargarArchivoGestion()" class="btn btn-primary">Cargar Archivos</button>
+                                </div>
+                            </div>
+                    </div>
+                    <hr>
+                    <div class="container">
+                        <h4>Archivos Cargados</h3>
+                            <template v-for="item in archivos">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <button v-if="item.nombre_archivo.includes('.pdf')" type="button" @click="DescargarArchivo(item.nombre_archivo)" class="btn btn-danger">
+                                            <li class="fa fa-file-pdf-o"></li> &nbsp; @{{item.nombre_archivo}}
+                                        </button>
+                                        <button v-else type="button" class="btn btn-primary" @click="DescargarArchivo(item.nombre_archivo)">
+                                            <li class="fa fa-file-image-o"></li> &nbsp; @{{item.nombre_archivo}}
+                                        </button>
+                                    </div>
+                                </div>
+                                &nbsp;
+                            </template>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
-
-
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 <script>
     id = <?php echo $_GET['id'] ?>;
     identificacion = <?php echo $_GET['identificacion'] ?>;
+    obligacion = <?php echo $_GET['obligacion'] ?>;
 
 
     var tiempo = {
@@ -314,7 +406,10 @@
             contacto_selected: '',
             perfil_seleccionado: {},
             perfil_selected: '',
-            obligaciones: {}
+            obligaciones: {},
+            archivos: {},
+            identificacion: identificacion,
+            obligacion: obligacion,
         },
         mounted() {
             this.getData()
@@ -331,12 +426,14 @@
                 this.mtvonopago = data.mtvonopago
                 this.perfil = data.procesos
                 this.obligaciones = data.obligaciones
+                this.archivos = data.archivos
             },
             async getData() {
 
                 json = {
                     'id': id,
-                    'identificacion': identificacion
+                    'identificacion': identificacion,
+                    'obligacion': obligacion
                 }
 
                 const response = await fetch("/getdataproceso", {
@@ -354,7 +451,6 @@
                 this.getModulesActivos(data)
                 this.binding(data);
             },
-
             getModulesActivos(data) {
                 let modulos = []
                 for (let index = 0; index < data.modulo_gestion.length; index++) {
@@ -423,8 +519,8 @@
                     'accion': this.accion_selected,
                     'contacto': this.contacto_selected,
                     'perfil': this.perfil_selected,
-                    'identificacion': this.procesos[0].identificacion,
-                    'obligacion': this.procesos[0].obligacion,
+                    'identificacion': this.procesos.identificacion,
+                    'obligacion': this.procesos.obligacion,
                     'fecha_agendado': fecha_agendado,
                 }
                 const response = await fetch("/saveGestion", {
@@ -463,9 +559,32 @@
                 tiempo.hora = '00';
                 document.getElementById('contacto').style.display = 'none'
                 document.getElementById('perfil').style.display = 'none'
+            },
+            async cargarArchivoGestion() {
+                var datos = new FormData($('#formUploadCsv')[0]);
+                const response = await fetch("/uploadFileGestion", {
+                    method: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    },
+                    body: datos
+                });
+                data = await response.json()
+                if (data.status == 200) {
+                    alert(data.msg)
+                } else {
+                    alert(data.msg)
+                }
+                this.getData()
+            },
+            async DescargarArchivo(nombre_archivo) {
+                var dir = "filesGestion/" + identificacion + '-' + obligacion + '/' + nombre_archivo;
+                var enlaceDescarga = document.createElement('a');
+                enlaceDescarga.download = nombre_archivo; // Nombre del archivo
+                enlaceDescarga.href = dir;
+                document.body.appendChild(enlaceDescarga);
+                enlaceDescarga.click();
             }
-
-
         }
     });
 </script>

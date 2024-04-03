@@ -172,7 +172,6 @@ $usuario_email = $usuario[0]->email;
                 this.pagina_actual = this.pagina_actual - 1
                 this.fin = this.fin - 10
                 this.inicio = this.inicio - 10
-                console.log(this.inicio, this.fin);
                 this.procesos = this.data.slice(this.inicio, this.fin)
             },
             gopage(page) {

@@ -45,10 +45,14 @@
 		var calendar = new FullCalendar.Calendar(calendarEl, {
 			initialView: 'dayGridMonth',
 			events: data,
+
 			eventClick: function(event, jsEvent, view) {
 				let idproceso = event.event._def.extendedProps.idproceso;
 				let identificacion = event.event._def.extendedProps.identificacion;
-				window.location.href = "/verProceso?id="+idproceso+"&identificacion="+identificacion;
+				console.log(idproceso);
+				console.log(identificacion);
+				window.location.href = "/verProceso?id="+idproceso+"&identificacion="+identificacion+"&obligacion="+identificacion;
+
 			},
 		});
 		calendar.render();
