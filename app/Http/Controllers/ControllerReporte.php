@@ -62,7 +62,7 @@ class ControllerReporte extends Controller
         if($reporte == 'Gestion'){
 
             $sql = "SELECT h.obligacion,  h.fechagestion, h.gestion, a.nombre, pg.nombre, c.nombre,
-            (SELECT * FROM dblink('dbname=postgres user=postgres password=santiago10.', 'SELECT name FROM users where id =' || h.idusuario )AS t( name TEXT)) AS subquery_result
+            (SELECT * FROM dblink('dbname=postgres user=postgres password=postgres', 'SELECT name FROM users where id =' || h.idusuario )AS t( name TEXT)) AS subquery_result
             from sys.historicogestion h  inner join sys.acciongestion a on a.id = h.idaccion inner join sys.perfil_gestion pg on pg.id = h.idperfil inner join sys.contacto c on c.id = h.idaccion where h.fechagestion between '$fecha_inicio' and '$fecha_fin'";
 
         }else if($reporte == 'Productividad'){
